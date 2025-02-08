@@ -1,4 +1,5 @@
 ﻿using AtividadeFinal.Controllers;
+using AtividadeFinal.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,6 +24,11 @@ namespace AtividadeFinal
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
         }
 
+        /// <summary>
+        /// Abre o form <see cref="FormUsers">
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnUser_Click(object sender, EventArgs e)
         {
             UserController userController = new UserController(connectionString);
@@ -30,9 +36,16 @@ namespace AtividadeFinal
             formUsers.ShowDialog();
         }
 
+        /// <summary>
+        /// Abre o form <see cref="FormProducts"/>
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnProducts_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Funcionalidade em desenvolvimento!", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            ProductController productController = new ProductController(connectionString);
+            FormProducts formProducts = new FormProducts(productController);
+            formProducts.ShowDialog();
         }
     }
 }

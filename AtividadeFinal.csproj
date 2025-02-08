@@ -98,6 +98,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -105,15 +106,25 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Product.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\FormProducts.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\FormProducts.Designer.cs">
+      <DependentUpon>FormProducts.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\FormUsers.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\FormUsers.Designer.cs">
       <DependentUpon>FormUsers.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Views\FormProducts.resx">
+      <DependentUpon>FormProducts.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\FormUsers.resx">
       <DependentUpon>FormUsers.cs</DependentUpon>
     </EmbeddedResource>
