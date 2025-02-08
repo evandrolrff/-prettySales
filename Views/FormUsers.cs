@@ -28,6 +28,32 @@ namespace AtividadeFinal
             }
         }
 
+        #region EventsButtons
+        /// <summary>
+        /// Adiciona um novo User <see cref="User"></see>
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            User user = createUserFromFields();
+            bool userIsAdded = controller.AddUser(user);
+
+            if (!userIsAdded)
+            {
+                MessageBox.Show("Houve um erro durante a inserção do novo usuário", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                clean_fields();
+            }
+        }
+
+        /// <summary>
+        /// Retorna para o menu principal <see cref="MainForm"/>
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnReturn_Click(object sender, EventArgs e)
         {
             if(!string.IsNullOrWhiteSpace(txtName.Text) ||
@@ -48,49 +74,11 @@ namespace AtividadeFinal
             }
         }
 
-        private void GetAllUsers(UserController controller)
-        {
-            List<User> users = controller.GetAllUsers();
-            if (users.Count > 0)
-            {
-                dataGridUsers.DataSource = null; // reseta a fonte de dados
-                dataGridUsers.DataSource = users; // Atribui a lista ao DataGridView
-            }
-            else
-            {
-                btnDel.Enabled = false;
-                btnEdit.Enabled = false;
-            }
-        }
-
-        private void btnAdd_Click(object sender, EventArgs e)
-        {
-            User user = createUserFromFields();
-            bool userIsAdded = controller.AddUser(user);
-
-            if (!userIsAdded)
-            {
-                MessageBox.Show("Houve um erro durante a inserção do novo usuário", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else
-            {
-                clean_fields();
-            }
-        }
-
-        private void clean_fields()
-        {
-            foreach (Control controle in this.Controls)
-            {
-                if (controle is TextBox)
-                {
-                    controle.Text = "";
-                }
-            }
-
-            GetAllUsers(controller);
-        }
-
+        /// <summary>
+        /// Edita um usuário já selecionado pelo DataGridView
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnEdit_Click(object sender, EventArgs e)
         {
             // Verifique se uma linha está selecionada
@@ -101,20 +89,17 @@ namespace AtividadeFinal
                 // Obtém a linha selecionada
                 DataGridViewRow row = dataGridUsers.Rows[rowIndex];
 
-                fillInFields(row);
-
                 DialogResult result = MessageBox.Show("Tem certeza que deseja editar este registro?", "Atenção", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
                 if (result == DialogResult.Yes)
                 {
-                    User user  = createUserFromFields();
+                    User user = createUserFromFields(Convert.ToInt32(row.Cells["Id"].Value));
                     bool isEdited = controller.UpdateUser(user);
                     if (!isEdited)
                     {
                         MessageBox.Show("Houve algum erro durante a edição do usuário.", "Informação", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-
                 }
-                
+
                 clean_fields();
             }
             else
@@ -123,6 +108,11 @@ namespace AtividadeFinal
             }
         }
 
+        /// <summary>
+        /// Deleta um usuário já selecionado pelo DataGridView
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnDel_Click(object sender, EventArgs e)
         {
             // Verifique se uma linha está selecionada
@@ -132,8 +122,6 @@ namespace AtividadeFinal
                 int rowIndex = dataGridUsers.SelectedRows[0].Index;
                 // Obtém a linha selecionada
                 DataGridViewRow row = dataGridUsers.Rows[rowIndex];
-
-                fillInFields(row);
 
                 DialogResult result = MessageBox.Show("Tem certeza que deseja excluir este registro?", "Atenção", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
                 if (result == DialogResult.Yes)
@@ -151,7 +139,33 @@ namespace AtividadeFinal
                 MessageBox.Show("Selecione uma linha para excluir.", "Informação", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
-        
+        #endregion
+
+        #region EventsDataGrid
+        /// <summary>
+        /// Preenche o DataGridView com todos os usuários
+        /// </summary>
+        /// <param name="controller"></param>
+        private void GetAllUsers(UserController controller)
+        {
+            List<User> users = controller.GetAllUsers();
+            if (users.Count > 0)
+            {
+                dataGridUsers.DataSource = null; // reseta a fonte de dados
+                dataGridUsers.DataSource = users; // Atribui a lista ao DataGridView
+            }
+            else
+            {
+                btnDel.Enabled = false;
+                btnEdit.Enabled = false;
+            }
+        }
+
+        /// <summary>
+        /// Preenche os campos de acordo com o usuário selecionado do DataGridView <see cref="DataGridView.SelectedRows"/>
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dataGridUsers_SelectionChanged(object sender, EventArgs e)
         {
             // Verifica se alguma linha foi selecionada
@@ -164,6 +178,11 @@ namespace AtividadeFinal
             }
         }
 
+        /// <summary>
+        /// Preenche os campos de acordo com o usuário selecionado do DataGridView <see cref="DataGridView.Rows">
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dataGridUsers_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             // Verifica se o clique foi em uma linha válida (não no cabeçalho)
@@ -171,7 +190,6 @@ namespace AtividadeFinal
             {
                 // Obtém a linha selecionada
                 DataGridViewRow row = dataGridUsers.Rows[e.RowIndex];
-
                 fillInFields(row);
             }
             else
@@ -179,10 +197,31 @@ namespace AtividadeFinal
                 clean_fields();
             }
         }
+        #endregion
 
+        #region Utilities
+        /// <summary>
+        /// Limpa os campos de textos do form.
+        /// </summary>
+        private void clean_fields()
+        {
+            foreach (Control controle in this.Controls)
+            {
+                if (controle is TextBox)
+                {
+                    controle.Text = "";
+                }
+            }
+
+            GetAllUsers(controller);
+        }
+
+        /// <summary>
+        /// Preenche os campos de acordo com um <see cref="DataGridViewRow"> selecionado.
+        /// </summary>
+        /// <param name="row"></param>
         private void fillInFields(DataGridViewRow row)
         {
-            // Preenche os campos txtNome e txtEmail com os valores da linha selecionada
             txtName.Text = row.Cells["Name"].Value.ToString();
             txtLastName.Text = row.Cells["LastName"].Value.ToString();
             txtAddress.Text = row.Cells["Address"].Value.ToString();
@@ -190,7 +229,12 @@ namespace AtividadeFinal
             txtComplement.Text = row.Cells["Complement"].Value.ToString();
         }
 
-        private User createUserFromFields()
+        /// <summary>
+        /// Cria um objeto do tipo <see cref="User"/> segundo os valores informados
+        /// nos campos de entrada de texto.
+        /// </summary>
+        /// <returns></returns>
+        private User createUserFromFields(int userId = 0)
         {
             User user = null;
 
@@ -204,6 +248,11 @@ namespace AtividadeFinal
                     Number = numero,
                     Complement = txtComplement.Text,
                 };
+
+                if(userId != 0)
+                {
+                    user.Id = userId;
+                }
             }
             else
             {
@@ -212,5 +261,6 @@ namespace AtividadeFinal
 
             return user;
         }
+        #endregion
     }
 }
