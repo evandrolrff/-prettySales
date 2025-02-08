@@ -5,101 +5,100 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace AtividadeFinal.Controllers
 {
-    public class UserController
+    public class ProductController
     {
         private readonly string connectionString;
 
-        public UserController(string connectionString)
+        public ProductController(string connectionString)
         {
             this.connectionString = connectionString;
         }
 
+
         /// <summary>
-        /// Busca todos os <see cref="User"/> no banco de dados.
+        /// Busca todos os <see cref="Product"/> no banco de dados.
         /// </summary>
         /// <returns></returns>
-        public List<User> GetAllUsers()
+        public List<Product> GetAllProducts()
         {
-            List<User> users = new List<User>();
+            List<Product> products = new List<Product>();
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 try
                 {
                     connection.Open();
-                    MySqlCommand cmd = new MySqlCommand("SELECT * FROM Users", connection);
+                    MySqlCommand cmd = new MySqlCommand("SELECT * FROM Products", connection);
                     MySqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
                     {
-                        User user = new User();
-                        users.Add(user.FromReader(reader));
+                        Product product = new Product();
+                        products.Add(product.FromReader(reader));
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Erro ao buscar usuários: " + ex.Message);
+                    Console.WriteLine("Erro ao buscar produtos: " + ex.Message);
                 }
             }
-            return users;
+            return products;
         }
 
         /// <summary>
-        /// Retorna um <see cref="User"/> do banco de dados a partir de um id.
+        /// Retorna um <see cref="Product"/> do banco de dados a partir de um id.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public User GetUserById(int id)
+        public Product GetProductById(int id)
         {
-            User user = new User();
+            Product product = new Product();
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 try
                 {
                     connection.Open();
-                    MySqlCommand cmd = new MySqlCommand("SELECT * FROM Users WHERE Id = @Id", connection);
+                    MySqlCommand cmd = new MySqlCommand("SELECT * FROM Products WHERE Id = @Id", connection);
                     cmd.Parameters.AddWithValue("@Id", id);
                     MySqlDataReader reader = cmd.ExecuteReader();
 
                     if (reader.Read())
                     {
-                        user.FromReader(reader);
+                        product.FromReader(reader);
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Erro ao buscar usuário: " + ex.Message);
+                    Console.WriteLine("Erro ao buscar produto: " + ex.Message);
                 }
             }
-            return user;
+            return product;
         }
 
         /// <summary>
-        /// Adiciona no banco um <see cref="User"/>.
+        /// Adiciona no banco um <see cref="Product"/>.
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="product"></param>
         /// <returns></returns>
-        public bool AddUser(User user)
+        public bool AddProduct(Product product)
         {
-            bool sucess= false;
+            bool sucess = false;
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 try
                 {
                     connection.Open();
-                    string query = "INSERT INTO Users (name, lastName, address, number, complement) " +
-                        "VALUES (@name, @lastName, @address, @number, @complement)";
+                    string query = "INSERT INTO Products (name, description, price, pathImage) " +
+                        "VALUES (@name, @description, @price, @pathImage)";
                     MySqlCommand cmd = new MySqlCommand(query, connection);
-                    cmd.Parameters.AddWithValue("@name", user.Name);
-                    cmd.Parameters.AddWithValue("@lastName", user.LastName);
-                    cmd.Parameters.AddWithValue("@address", user.Address);
-                    cmd.Parameters.AddWithValue("@number", user.Number);
-                    cmd.Parameters.AddWithValue("@complement", user.Complement);
+                    cmd.Parameters.AddWithValue("@name", product.Name);
+                    cmd.Parameters.AddWithValue("@description", product.Description);
+                    cmd.Parameters.AddWithValue("@price", product.Price);
+                    cmd.Parameters.AddWithValue("@pathImage", product.PathImage);
 
                     int result = cmd.ExecuteNonQuery();
                     if (result > 0)
@@ -107,7 +106,7 @@ namespace AtividadeFinal.Controllers
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Erro ao inserir usuário: " + ex.Message);
+                    Console.WriteLine("Erro ao inserir produto: " + ex.Message);
                 }
             }
 
@@ -115,22 +114,22 @@ namespace AtividadeFinal.Controllers
         }
 
         /// <summary>
-        /// Remove um <see cref="User"/> do banco.
+        /// Remove um <see cref="Product"/> do banco.
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="productId"></param>
         /// <returns></returns>
-        public bool RemoveUser(int userId)
+        public bool RemoveProduct(int productId)
         {
-            bool sucess= false;
+            bool sucess = false;
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 try
                 {
                     connection.Open();
-                    string query = "DELETE FROM Users WHERE Id = @Id";
+                    string query = "DELETE FROM Products WHERE Id = @Id";
                     MySqlCommand cmd = new MySqlCommand(query, connection);
-                    cmd.Parameters.AddWithValue("@Id", userId);
+                    cmd.Parameters.AddWithValue("@Id", productId);
 
                     int result = cmd.ExecuteNonQuery();
                     if (result > 0)
@@ -138,18 +137,18 @@ namespace AtividadeFinal.Controllers
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Erro ao excluir usuário: " + ex.Message);
+                    Console.WriteLine("Erro ao excluir produto: " + ex.Message);
                 }
             }
             return sucess;
         }
 
         /// <summary>
-        /// Atualiza no banco um <see cref="User"/> especifico.
+        /// Atualiza no banco um <see cref="Product"/> especifico.
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="product"></param>
         /// <returns></returns>
-        public bool UpdateUser(User user)
+        public bool UpdateProduct(Product product)
         {
             bool sucess = false;
             using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -157,15 +156,14 @@ namespace AtividadeFinal.Controllers
                 try
                 {
                     connection.Open();
-                    string query = "UPDATE Users SET name = @name, lastName = @lastName, address = @address, " +
-                        "number = @number, complement = @complement WHERE Id = @Id";
+                    string query = "UPDATE Products SET name = @name, description = @description, price = @price, " +
+                        "pathImage = @pathImage WHERE Id = @Id";
                     MySqlCommand cmd = new MySqlCommand(query, connection);
-                    cmd.Parameters.AddWithValue("@Id", user.Id);
-                    cmd.Parameters.AddWithValue("@name", user.Name);
-                    cmd.Parameters.AddWithValue("@lastName", user.LastName);
-                    cmd.Parameters.AddWithValue("@address", user.Address);
-                    cmd.Parameters.AddWithValue("@number", user.Number);
-                    cmd.Parameters.AddWithValue("@complement", user.Complement);
+                    cmd.Parameters.AddWithValue("@Id", product.Id);
+                    cmd.Parameters.AddWithValue("@name", product.Name);
+                    cmd.Parameters.AddWithValue("@description", product.Description);
+                    cmd.Parameters.AddWithValue("@price", product.Price);
+                    cmd.Parameters.AddWithValue("@pathImage", product.PathImage);
 
                     int result = cmd.ExecuteNonQuery();
                     if (result > 0)
@@ -173,7 +171,7 @@ namespace AtividadeFinal.Controllers
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Erro ao atualizar usuário: " + ex.Message);
+                    Console.WriteLine("Erro ao atualizar produto: " + ex.Message);
                 }
             }
             return sucess;
