@@ -1,0 +1,16 @@
+CREATE TABLE Users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR(100) NOT NULL,
+    lastName VARCHAR(100) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    number VARCHAR(10) NOT NULL,
+    complement VARCHAR(255) NULL
+);
+
+CREATE TABLE Products (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR(150) NOT NULL,
+    description TEXT NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    pathImage VARCHAR(255) NULL
+);

@@ -18,6 +18,7 @@ namespace AtividadeFinal
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            AppDomain.CurrentDomain.SetData("DataDirectory", AppDomain.CurrentDomain.BaseDirectory);
             string connectionString = ConfigurationManager.ConnectionStrings["ConnectionBD"].ConnectionString;
 
             Application.Run(new MainForm(connectionString));

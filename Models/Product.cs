@@ -1,9 +1,7 @@
-﻿using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Data.SQLite;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System;
 
 namespace AtividadeFinal.Models
 {
@@ -32,13 +30,13 @@ namespace AtividadeFinal.Models
         public float Price { get { return price; } set { price = value; } }
         public string PathImage { get { return pathImage; } set { pathImage = value; } }
 
-        public Product FromReader(MySqlDataReader reader)
+        public Product FromReader(SQLiteDataReader reader)
         {
-            Id = reader.GetInt32("id");
-            Name = reader.GetString("name");
-            Description = reader.GetString("description");
-            Price = reader.GetFloat("price");
-            PathImage = reader.GetString("pathImage");
+            Id = reader.GetInt32(reader.GetOrdinal("id"));
+            Name = reader.GetString(reader.GetOrdinal("name"));
+            Description = reader.GetString(reader.GetOrdinal("description"));
+            Price = reader.GetFloat(reader.GetOrdinal("price"));
+            PathImage = reader.GetString(reader.GetOrdinal("pathImage"));
 
             return this;
         }

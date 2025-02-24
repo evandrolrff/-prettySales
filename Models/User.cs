@@ -1,10 +1,8 @@
-﻿using MySql.Data.MySqlClient;
-using System;
-using System.CodeDom;
+﻿using System.Data.SQLite;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System;
+
 
 namespace AtividadeFinal.Models
 {
@@ -14,10 +12,10 @@ namespace AtividadeFinal.Models
         private string name;
         private string lastName;
         private string address;
-        private int number;
+        private string number;
         private string complement;
 
-        public User(int id, string name, string lastName, string address, int number, string complement = "")
+        public User(int id, string name, string lastName, string address, string number, string complement = "")
         {
             this.id = id;
             this.name = name;
@@ -65,7 +63,7 @@ namespace AtividadeFinal.Models
             }
         }
 
-        public int Number
+        public string Number
         { 
             get { return this.number; }
             set
@@ -83,14 +81,14 @@ namespace AtividadeFinal.Models
             }
         }
 
-        public User FromReader(MySqlDataReader reader)
+        public User FromReader(SQLiteDataReader reader)
         {
-            Id = reader.GetInt32("id");
-            Name = reader.GetString("name");
-            LastName = reader.GetString("LastName");
-            Address = reader.GetString("address");
-            Number = reader.GetInt32("number");
-            Complement = reader.GetString("complement");
+            Id = reader.GetInt32(reader.GetOrdinal("id"));
+            Name = reader.GetString(reader.GetOrdinal("name"));
+            LastName = reader.GetString(reader.GetOrdinal("LastName"));
+            Address = reader.GetString(reader.GetOrdinal("address"));
+            Number = reader.GetString(reader.GetOrdinal("number"));
+            Complement = reader.GetString(reader.GetOrdinal("complement"));
 
             return this;
         }

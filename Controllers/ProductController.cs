@@ -1,10 +1,7 @@
 ﻿using AtividadeFinal.Models;
-using MySql.Data.MySqlClient;
+using System.Data.SQLite;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AtividadeFinal.Controllers
 {
@@ -26,13 +23,13 @@ namespace AtividadeFinal.Controllers
         {
             List<Product> products = new List<Product>();
 
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
                 try
                 {
                     connection.Open();
-                    MySqlCommand cmd = new MySqlCommand("SELECT * FROM Products", connection);
-                    MySqlDataReader reader = cmd.ExecuteReader();
+                    SQLiteCommand cmd = new SQLiteCommand("SELECT * FROM Products", connection);
+                    SQLiteDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
                     {
@@ -56,14 +53,14 @@ namespace AtividadeFinal.Controllers
         public Product GetProductById(int id)
         {
             Product product = new Product();
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
                 try
                 {
                     connection.Open();
-                    MySqlCommand cmd = new MySqlCommand("SELECT * FROM Products WHERE Id = @Id", connection);
+                    SQLiteCommand cmd = new SQLiteCommand("SELECT * FROM Products WHERE Id = @Id", connection);
                     cmd.Parameters.AddWithValue("@Id", id);
-                    MySqlDataReader reader = cmd.ExecuteReader();
+                    SQLiteDataReader reader = cmd.ExecuteReader();
 
                     if (reader.Read())
                     {
@@ -87,14 +84,14 @@ namespace AtividadeFinal.Controllers
         {
             bool sucess = false;
 
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
                 try
                 {
                     connection.Open();
                     string query = "INSERT INTO Products (name, description, price, pathImage) " +
                         "VALUES (@name, @description, @price, @pathImage)";
-                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    SQLiteCommand cmd = new SQLiteCommand(query, connection);
                     cmd.Parameters.AddWithValue("@name", product.Name);
                     cmd.Parameters.AddWithValue("@description", product.Description);
                     cmd.Parameters.AddWithValue("@price", product.Price);
@@ -122,13 +119,13 @@ namespace AtividadeFinal.Controllers
         {
             bool sucess = false;
 
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
                 try
                 {
                     connection.Open();
                     string query = "DELETE FROM Products WHERE Id = @Id";
-                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    SQLiteCommand cmd = new SQLiteCommand(query, connection);
                     cmd.Parameters.AddWithValue("@Id", productId);
 
                     int result = cmd.ExecuteNonQuery();
@@ -151,14 +148,14 @@ namespace AtividadeFinal.Controllers
         public bool UpdateProduct(Product product)
         {
             bool sucess = false;
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
                 try
                 {
                     connection.Open();
                     string query = "UPDATE Products SET name = @name, description = @description, price = @price, " +
                         "pathImage = @pathImage WHERE Id = @Id";
-                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    SQLiteCommand cmd = new SQLiteCommand(query, connection);
                     cmd.Parameters.AddWithValue("@Id", product.Id);
                     cmd.Parameters.AddWithValue("@name", product.Name);
                     cmd.Parameters.AddWithValue("@description", product.Description);

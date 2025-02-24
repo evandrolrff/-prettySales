@@ -1,11 +1,9 @@
-﻿using AtividadeFinal.Models;
-using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using AtividadeFinal.Models;
+using System.Data.SQLite;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using System;
+
 
 namespace AtividadeFinal.Controllers
 {
@@ -26,13 +24,13 @@ namespace AtividadeFinal.Controllers
         {
             List<User> users = new List<User>();
 
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
                 try
                 {
                     connection.Open();
-                    MySqlCommand cmd = new MySqlCommand("SELECT * FROM Users", connection);
-                    MySqlDataReader reader = cmd.ExecuteReader();
+                    SQLiteCommand cmd = new SQLiteCommand("SELECT * FROM Users", connection);
+                    SQLiteDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
                     {
@@ -56,14 +54,14 @@ namespace AtividadeFinal.Controllers
         public User GetUserById(int id)
         {
             User user = new User();
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
                 try
                 {
                     connection.Open();
-                    MySqlCommand cmd = new MySqlCommand("SELECT * FROM Users WHERE Id = @Id", connection);
+                    SQLiteCommand cmd = new SQLiteCommand("SELECT * FROM Users WHERE id = @Id", connection);
                     cmd.Parameters.AddWithValue("@Id", id);
-                    MySqlDataReader reader = cmd.ExecuteReader();
+                    SQLiteDataReader reader = cmd.ExecuteReader();
 
                     if (reader.Read())
                     {
@@ -87,14 +85,14 @@ namespace AtividadeFinal.Controllers
         {
             bool sucess= false;
 
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
                 try
                 {
                     connection.Open();
                     string query = "INSERT INTO Users (name, lastName, address, number, complement) " +
                         "VALUES (@name, @lastName, @address, @number, @complement)";
-                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    SQLiteCommand cmd = new SQLiteCommand(query, connection);
                     cmd.Parameters.AddWithValue("@name", user.Name);
                     cmd.Parameters.AddWithValue("@lastName", user.LastName);
                     cmd.Parameters.AddWithValue("@address", user.Address);
@@ -123,13 +121,13 @@ namespace AtividadeFinal.Controllers
         {
             bool sucess= false;
 
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
                 try
                 {
                     connection.Open();
-                    string query = "DELETE FROM Users WHERE Id = @Id";
-                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    string query = "DELETE FROM Users WHERE id = @Id";
+                    SQLiteCommand cmd = new SQLiteCommand(query, connection);
                     cmd.Parameters.AddWithValue("@Id", userId);
 
                     int result = cmd.ExecuteNonQuery();
@@ -152,14 +150,14 @@ namespace AtividadeFinal.Controllers
         public bool UpdateUser(User user)
         {
             bool sucess = false;
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
                 try
                 {
                     connection.Open();
                     string query = "UPDATE Users SET name = @name, lastName = @lastName, address = @address, " +
-                        "number = @number, complement = @complement WHERE Id = @Id";
-                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                        "number = @number, complement = @complement WHERE id = @Id";
+                    SQLiteCommand cmd = new SQLiteCommand(query, connection);
                     cmd.Parameters.AddWithValue("@Id", user.Id);
                     cmd.Parameters.AddWithValue("@name", user.Name);
                     cmd.Parameters.AddWithValue("@lastName", user.LastName);
