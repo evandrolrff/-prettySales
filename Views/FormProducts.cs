@@ -18,9 +18,20 @@ namespace AtividadeFinal.Views
 
         private ProductController controller;
 
+        private readonly Dictionary<string, string> columnsDataGridProducts = new Dictionary<string, string>
+        {
+            { "id", "ID"},
+            { "name" , "Nome"},
+            { "description", "Descrição"},
+            { "price", "Preço"},
+            { "pathImage", "Caminho URL"}
+        };
+        
         public FormProducts(ProductController productController = null)
         {
             InitializeComponent();
+            ConfigureDataGridView();
+
             if (productController != null)
             {
                 controller = productController;
@@ -139,7 +150,6 @@ namespace AtividadeFinal.Views
             }
         }
         #endregion
-
 
         #region EventsDataGrid
         /// <summary>

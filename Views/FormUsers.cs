@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace AtividadeFinal
 {
@@ -17,11 +18,22 @@ namespace AtividadeFinal
 
         private UserController controller;
 
+        private readonly Dictionary<string, string> columnsDataGridUsers = new Dictionary<string, string>
+        {
+            { "id", "ID"},
+            { "name" , "Nome"},
+            { "lastName", "Sobrenome"},
+            { "address", "Endereço"},
+            { "number", "Número"},
+            { "complement", "Complemento"}
+        };
+
         public FormUsers(UserController userController = null)
         {
             InitializeComponent();
-            
-            if(userController != null)
+            ConfigureDataGridView();
+
+            if (userController != null)
             {
                 controller = userController;
                 GetAllUsers(controller);
@@ -238,25 +250,18 @@ namespace AtividadeFinal
         {
             User user = null;
 
-            if (int.TryParse(txtNumber.Text, out int numero))
+            user = new User()
             {
-                user = new User()
-                {
-                    Name = txtName.Text,
-                    LastName = txtLastName.Text,
-                    Address = txtAddress.Text,
-                    Number = numero,
-                    Complement = txtComplement.Text,
-                };
+                Name = txtName.Text,
+                LastName = txtLastName.Text,
+                Address = txtAddress.Text,
+                Number = txtNumber.Text,
+                Complement = txtComplement.Text,
+            };
 
-                if(userId != 0)
-                {
-                    user.Id = userId;
-                }
-            }
-            else
+            if(userId != 0)
             {
-                MessageBox.Show("Algum dos campos foi digitado um valor inesperado!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                user.Id = userId;
             }
 
             return user;

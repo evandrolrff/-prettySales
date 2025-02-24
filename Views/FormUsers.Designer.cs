@@ -1,4 +1,7 @@
-﻿namespace AtividadeFinal
+﻿using System.Collections.Generic;
+using System.Windows.Forms;
+
+namespace AtividadeFinal
 {
     partial class FormUsers
     {
@@ -138,6 +141,7 @@
             this.dataGridUsers.TabIndex = 10;
             this.dataGridUsers.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridUsers_CellContentClick);
             this.dataGridUsers.SelectionChanged += new System.EventHandler(this.dataGridUsers_SelectionChanged);
+            this.dataGridUsers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             // 
             // btnAdd
             // 
@@ -209,6 +213,26 @@
         }
 
         #endregion
+
+        private void ConfigureDataGridView()
+        {
+            dataGridUsers.AutoGenerateColumns = false;
+
+            DataGridViewTextBoxColumn colId;
+            foreach (KeyValuePair<string, string> valuePair in columnsDataGridUsers)
+            {
+                colId = new DataGridViewTextBoxColumn();
+                colId.Name = $"col{valuePair.Key}";
+                colId.HeaderText = valuePair.Value;
+                colId.DataPropertyName = valuePair.Key; // Nome da propriedade no objeto de dados
+
+                if(colId.DataPropertyName == "id")
+                {
+                    colId.Visible = false;
+                }
+                dataGridUsers.Columns.Add(colId);
+            }
+        }
 
         private System.Windows.Forms.TextBox txtName;
         private System.Windows.Forms.Label label1;
