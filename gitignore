@@ -1,0 +1,38 @@
+# Windows Forms / Visual Studio / .NET
+.vs/
+.vs2019/
+.vs2017/
+.vs2015/
+.vs2013/
+
+# Pasta bin/obj gerada automaticamente
+bin/
+obj/
+
+# Arquivos do usuário do Visual Studio
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+
+# Arquivos de backup e temporários
+*~.tmp
+*.bak
+*.swp
+
+# Arquivos de log
+*.log
+
+# Arquivos de configuração de pacotes NuGet (caso esteja utilizando)
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Diretórios de dependências do NuGet
+packages/
+
+# Arquivos de configuração local que podem variar de máquina para máquina
+*.dbmdl
+
+# Arquivos específicos de publicação ou compilação
+.publish/
