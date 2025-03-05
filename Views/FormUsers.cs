@@ -104,7 +104,7 @@ namespace AtividadeFinal
                 DialogResult result = MessageBox.Show("Tem certeza que deseja editar este registro?", "Atenção", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
                 if (result == DialogResult.Yes)
                 {
-                    User user = createUserFromFields(Convert.ToInt32(row.Cells["Id"].Value));
+                    User user = createUserFromFields(Convert.ToInt32(row.Cells[$"col-id"].Value));
                     bool isEdited = controller.UpdateUser(user);
                     if (!isEdited)
                     {
@@ -138,7 +138,7 @@ namespace AtividadeFinal
                 DialogResult result = MessageBox.Show("Tem certeza que deseja excluir este registro?", "Atenção", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
                 if (result == DialogResult.Yes)
                 {
-                    controller.RemoveUser(Convert.ToInt32(row.Cells["Id"].Value));
+                    controller.RemoveUser(Convert.ToInt32(row.Cells["col-id"].Value));
                     this.Close();
                 }
                 else
@@ -234,11 +234,30 @@ namespace AtividadeFinal
         /// <param name="row"></param>
         private void fillInFields(DataGridViewRow row)
         {
-            txtName.Text = row.Cells["Name"].Value.ToString();
-            txtLastName.Text = row.Cells["LastName"].Value.ToString();
-            txtAddress.Text = row.Cells["Address"].Value.ToString();
-            txtNumber.Text = row.Cells["Number"].Value.ToString();
-            txtComplement.Text = row.Cells["Complement"].Value.ToString();
+            foreach(KeyValuePair<string, string> valuePair in columnsDataGridUsers)
+            {
+                switch (valuePair.Key)
+                {
+                    case "name":
+                        txtName.Text = row.Cells[$"col-{valuePair.Key}"].Value.ToString();
+                        break;
+                    case "lastName":
+                        txtLastName.Text = row.Cells[$"col-{valuePair.Key}"].Value.ToString();
+                        break;
+                    case "address":
+                        txtAddress.Text = row.Cells[$"col-{valuePair.Key}"].Value.ToString();
+                        break;
+                    case "number":
+                        txtNumber.Text = row.Cells[$"col-{valuePair.Key}"].Value.ToString();
+                        break;
+                    case "complement":
+                        txtComplement.Text = row.Cells[$"col-{valuePair.Key}"].Value.ToString();
+                        break;
+                    case "id":
+                    default:
+                        break;
+                }
+            }
         }
 
         /// <summary>

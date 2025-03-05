@@ -102,7 +102,7 @@ namespace AtividadeFinal.Views
                 DialogResult result = MessageBox.Show("Tem certeza que deseja editar este registro?", "Atenção", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
                 if (result == DialogResult.Yes)
                 {
-                    Product product = createProductFromFields(Convert.ToInt32(row.Cells["Id"].Value));
+                    Product product = createProductFromFields(Convert.ToInt32(row.Cells["col-id"].Value));
                     bool isEdited = controller.UpdateProduct(product);
                     if (!isEdited)
                     {
@@ -136,7 +136,7 @@ namespace AtividadeFinal.Views
                 DialogResult result = MessageBox.Show("Tem certeza que deseja excluir este registro?", "Atenção", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
                 if (result == DialogResult.Yes)
                 {
-                    controller.RemoveProduct(Convert.ToInt32(row.Cells["Id"].Value));
+                    controller.RemoveProduct(Convert.ToInt32(row.Cells["col-id"].Value));
                     this.Close();
                 }
                 else
@@ -248,10 +248,27 @@ namespace AtividadeFinal.Views
         /// <param name="row"></param>
         private void fillInFields(DataGridViewRow row)
         {
-            txtName.Text = row.Cells["Name"].Value.ToString();
-            txtDescription.Text = row.Cells["Description"].Value.ToString();
-            txtPrice.Text = row.Cells["Price"].Value.ToString();
-            txtPathImage.Text = row.Cells["pathImage"].Value.ToString();
+            foreach(KeyValuePair<string, string> valuePair in columnsDataGridProducts)
+            {
+                switch (valuePair.Key)
+                {
+                    case "name":
+                        txtName.Text = row.Cells[$"col-{valuePair.Key}"].Value.ToString();
+                        break;
+                    case "description":
+                        txtDescription.Text = row.Cells[$"col-{valuePair.Key}"].Value.ToString();
+                        break;
+                    case "price":
+                        txtPrice.Text = row.Cells[$"col-{valuePair.Key}"].Value.ToString();
+                        break;
+                    case "pathImage":
+                        txtPathImage.Text = row.Cells[$"col-{valuePair.Key}"].Value.ToString();
+                        break;
+                    case "id":
+                    default:
+                        break;
+                }
+            }
         }
 
         /// <summary>

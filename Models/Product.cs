@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Data.SQLite;
-using System.Linq;
+﻿using System.Data.SQLite;
 using System;
 
 namespace AtividadeFinal.Models
@@ -24,11 +22,61 @@ namespace AtividadeFinal.Models
 
         public Product() { }
 
-        public int Id { get { return id; } set { id = value; } }
-        public string Name { get { return name; } set { name = value; } }
-        public string Description { get { return description; } set { description = value; } }
-        public float Price { get { return price; } set { price = value; } }
-        public string PathImage { get { return pathImage; } set { pathImage = value; } }
+        public int Id 
+        { 
+            get { return id; }
+            set { id = value; } 
+        }
+        public string Name 
+        { 
+            get { return name; }
+            set 
+            {
+                if (!string.IsNullOrEmpty(value))
+                {
+                    name = value;
+                }
+                else
+                {
+                    name = "";
+                }
+            }
+        }
+        public string Description 
+        { 
+            get { return description; }
+            set 
+            {
+                if (!string.IsNullOrEmpty(value))
+                {
+                    description = value;
+                }
+                else
+                {
+                    description = "";
+                }
+            } 
+        }
+        public float Price 
+        { 
+            get { return price; }
+            set { price = value; } 
+        }
+        public string PathImage 
+        { 
+            get { return pathImage; }
+            set 
+            {
+                if (!string.IsNullOrEmpty(value))
+                {
+                    pathImage = value;
+                }
+                else
+                {
+                    PathImage = "";
+                }
+            } 
+        }
 
         public Product FromReader(SQLiteDataReader reader)
         {
@@ -36,7 +84,15 @@ namespace AtividadeFinal.Models
             Name = reader.GetString(reader.GetOrdinal("name"));
             Description = reader.GetString(reader.GetOrdinal("description"));
             Price = reader.GetFloat(reader.GetOrdinal("price"));
-            PathImage = reader.GetString(reader.GetOrdinal("pathImage"));
+            try
+            {
+                PathImage = reader.GetString(reader.GetOrdinal("pathImage"));
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Erro: {ex}");
+                PathImage = "";
+            }
 
             return this;
         }

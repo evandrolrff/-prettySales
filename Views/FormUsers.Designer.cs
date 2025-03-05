@@ -222,7 +222,7 @@ namespace AtividadeFinal
             foreach (KeyValuePair<string, string> valuePair in columnsDataGridUsers)
             {
                 colId = new DataGridViewTextBoxColumn();
-                colId.Name = $"col{valuePair.Key}";
+                colId.Name = $"col-{valuePair.Key}";
                 colId.HeaderText = valuePair.Value;
                 colId.DataPropertyName = valuePair.Key; // Nome da propriedade no objeto de dados
 

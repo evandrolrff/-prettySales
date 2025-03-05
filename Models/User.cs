@@ -1,8 +1,5 @@
 ﻿using System.Data.SQLite;
-using System.Collections.Generic;
-using System.Linq;
 using System;
-
 
 namespace AtividadeFinal.Models
 {
@@ -41,7 +38,14 @@ namespace AtividadeFinal.Models
             get { return this.name; }
             set
             {
-                this.name = value;
+                if (!string.IsNullOrEmpty(value))
+                {
+                    this.name = value;
+                }
+                else
+                {
+                    this.name = "";
+                }
             }
         }
 
@@ -50,7 +54,14 @@ namespace AtividadeFinal.Models
             get { return this.lastName; }
             set
             {
-                this.lastName = value;
+                if (!string.IsNullOrEmpty(value))
+                {
+                    this.lastName = value;
+                }
+                else
+                {
+                    this.lastName = "";
+                }
             }
         }
 
@@ -59,7 +70,14 @@ namespace AtividadeFinal.Models
             get { return this.address; }
             set
             {
-                this.address = value;
+                if (!string.IsNullOrEmpty(value))
+                {
+                    this.address = value;
+                }
+                else
+                {
+                    this.address = "";
+                }
             }
         }
 
@@ -68,7 +86,14 @@ namespace AtividadeFinal.Models
             get { return this.number; }
             set
             {
-                this.number = value;
+                if (!string.IsNullOrEmpty(value))
+                {
+                    this.number = value;
+                }
+                else
+                {
+                    this.number = "";
+                }
             }
         }
 
@@ -77,7 +102,14 @@ namespace AtividadeFinal.Models
             get { return this.complement; }
             set
             {
-                this.complement = value;
+                if (!string.IsNullOrEmpty(value))
+                {
+                    this.complement = value;
+                }
+                else
+                {
+                    this.complement = "";
+                }
             }
         }
 
@@ -88,7 +120,15 @@ namespace AtividadeFinal.Models
             LastName = reader.GetString(reader.GetOrdinal("LastName"));
             Address = reader.GetString(reader.GetOrdinal("address"));
             Number = reader.GetString(reader.GetOrdinal("number"));
-            Complement = reader.GetString(reader.GetOrdinal("complement"));
+            try
+            {
+                Complement = reader.GetString(reader.GetOrdinal("complement"));
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Erro: {ex}");
+                Complement = "";
+            }
 
             return this;
         }
