@@ -49,7 +49,7 @@ namespace AtividadeFinal
         private void btnAdd_Click(object sender, EventArgs e)
         {
             User user = createUserFromFields();
-            bool userIsAdded = controller.AddUser(user);
+            bool userIsAdded = controller.AddObject(user);
 
             if (!userIsAdded)
             {
@@ -105,7 +105,7 @@ namespace AtividadeFinal
                 if (result == DialogResult.Yes)
                 {
                     User user = createUserFromFields(Convert.ToInt32(row.Cells[$"col-id"].Value));
-                    bool isEdited = controller.UpdateUser(user);
+                    bool isEdited = controller.UpdateObject(user);
                     if (!isEdited)
                     {
                         MessageBox.Show("Houve algum erro durante a edição do usuário.", "Informação", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -138,7 +138,7 @@ namespace AtividadeFinal
                 DialogResult result = MessageBox.Show("Tem certeza que deseja excluir este registro?", "Atenção", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
                 if (result == DialogResult.Yes)
                 {
-                    controller.RemoveUser(Convert.ToInt32(row.Cells["col-id"].Value));
+                    controller.RemoveObject(Convert.ToInt32(row.Cells["col-id"].Value));
                     this.Close();
                 }
                 else
@@ -160,7 +160,7 @@ namespace AtividadeFinal
         /// <param name="controller"></param>
         private void GetAllUsers(UserController controller)
         {
-            List<User> users = controller.GetAllUsers();
+            List<User> users = controller.GetAllRegistry();
             if (users.Count > 0)
             {
                 dataGridUsers.DataSource = null; // reseta a fonte de dados

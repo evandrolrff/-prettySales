@@ -7,20 +7,15 @@ using System;
 
 namespace AtividadeFinal.Controllers
 {
-    public class UserController
+    public class UserController : GenericDatabase<User>
     {
-        private readonly string connectionString;
-
-        public UserController(string connectionString)
-        {
-            this.connectionString = connectionString;
-        }
+        public UserController() : base() { }
 
         /// <summary>
         /// Busca todos os <see cref="User"/> no banco de dados.
         /// </summary>
         /// <returns></returns>
-        public List<User> GetAllUsers()
+        public override List<User> GetAllRegistry()
         {
             List<User> users = new List<User>();
 
@@ -51,7 +46,7 @@ namespace AtividadeFinal.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public User GetUserById(int id)
+        public override User GetObjectById(int id)
         {
             User user = new User();
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
@@ -81,9 +76,9 @@ namespace AtividadeFinal.Controllers
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public bool AddUser(User user)
+        public override bool AddObject(User classT)
         {
-            bool sucess= false;
+            bool sucess = false;
 
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
@@ -93,11 +88,11 @@ namespace AtividadeFinal.Controllers
                     string query = "INSERT INTO Users (name, lastName, address, number, complement) " +
                         "VALUES (@name, @lastName, @address, @number, @complement)";
                     SQLiteCommand cmd = new SQLiteCommand(query, connection);
-                    cmd.Parameters.AddWithValue("@name", user.Name);
-                    cmd.Parameters.AddWithValue("@lastName", user.LastName);
-                    cmd.Parameters.AddWithValue("@address", user.Address);
-                    cmd.Parameters.AddWithValue("@number", user.Number);
-                    cmd.Parameters.AddWithValue("@complement", user.Complement);
+                    cmd.Parameters.AddWithValue("@name", classT.Name);
+                    cmd.Parameters.AddWithValue("@lastName", classT.LastName);
+                    cmd.Parameters.AddWithValue("@address", classT.Address);
+                    cmd.Parameters.AddWithValue("@number", classT.Number);
+                    cmd.Parameters.AddWithValue("@complement", classT.Complement);
 
                     int result = cmd.ExecuteNonQuery();
                     if (result > 0)
@@ -117,9 +112,9 @@ namespace AtividadeFinal.Controllers
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public bool RemoveUser(int userId)
+        public override bool RemoveObject(int id)
         {
-            bool sucess= false;
+            bool sucess = false;
 
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
@@ -128,7 +123,7 @@ namespace AtividadeFinal.Controllers
                     connection.Open();
                     string query = "DELETE FROM Users WHERE id = @Id";
                     SQLiteCommand cmd = new SQLiteCommand(query, connection);
-                    cmd.Parameters.AddWithValue("@Id", userId);
+                    cmd.Parameters.AddWithValue("@Id", id);
 
                     int result = cmd.ExecuteNonQuery();
                     if (result > 0)
@@ -147,7 +142,7 @@ namespace AtividadeFinal.Controllers
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public bool UpdateUser(User user)
+        public override bool UpdateObject(User classT)
         {
             bool sucess = false;
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
@@ -158,12 +153,12 @@ namespace AtividadeFinal.Controllers
                     string query = "UPDATE Users SET name = @name, lastName = @lastName, address = @address, " +
                         "number = @number, complement = @complement WHERE id = @Id";
                     SQLiteCommand cmd = new SQLiteCommand(query, connection);
-                    cmd.Parameters.AddWithValue("@Id", user.Id);
-                    cmd.Parameters.AddWithValue("@name", user.Name);
-                    cmd.Parameters.AddWithValue("@lastName", user.LastName);
-                    cmd.Parameters.AddWithValue("@address", user.Address);
-                    cmd.Parameters.AddWithValue("@number", user.Number);
-                    cmd.Parameters.AddWithValue("@complement", user.Complement);
+                    cmd.Parameters.AddWithValue("@Id", classT.Id);
+                    cmd.Parameters.AddWithValue("@name", classT.Name);
+                    cmd.Parameters.AddWithValue("@lastName", classT.LastName);
+                    cmd.Parameters.AddWithValue("@address", classT.Address);
+                    cmd.Parameters.AddWithValue("@number", classT.Number);
+                    cmd.Parameters.AddWithValue("@complement", classT.Complement);
 
                     int result = cmd.ExecuteNonQuery();
                     if (result > 0)

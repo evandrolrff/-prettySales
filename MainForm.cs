@@ -31,7 +31,7 @@ namespace AtividadeFinal
         /// <param name="e"></param>
         private void btnUser_Click(object sender, EventArgs e)
         {
-            UserController userController = new UserController(connectionString);
+            UserController userController = new UserController();
             FormUsers formUsers = new FormUsers(userController);
             formUsers.ShowDialog();
         }
