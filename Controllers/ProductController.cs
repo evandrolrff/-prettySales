@@ -5,21 +5,15 @@ using System.Collections.Generic;
 
 namespace AtividadeFinal.Controllers
 {
-    public class ProductController
+    public class ProductController : GenericDatabase<Product>
     {
-        private readonly string connectionString;
-
-        public ProductController(string connectionString)
-        {
-            this.connectionString = connectionString;
-        }
-
+        public ProductController() : base() { }
 
         /// <summary>
         /// Busca todos os <see cref="Product"/> no banco de dados.
         /// </summary>
         /// <returns></returns>
-        public List<Product> GetAllProducts()
+        public override List<Product> GetAllRegistry()
         {
             List<Product> products = new List<Product>();
 
@@ -50,7 +44,7 @@ namespace AtividadeFinal.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Product GetProductById(int id)
+        public override Product GetObjectById(int id)
         {
             Product product = new Product();
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
@@ -80,7 +74,7 @@ namespace AtividadeFinal.Controllers
         /// </summary>
         /// <param name="product"></param>
         /// <returns></returns>
-        public bool AddProduct(Product product)
+        public override bool AddObject(Product classT)
         {
             bool sucess = false;
 
@@ -92,10 +86,10 @@ namespace AtividadeFinal.Controllers
                     string query = "INSERT INTO Products (name, description, price, pathImage) " +
                         "VALUES (@name, @description, @price, @pathImage)";
                     SQLiteCommand cmd = new SQLiteCommand(query, connection);
-                    cmd.Parameters.AddWithValue("@name", product.Name);
-                    cmd.Parameters.AddWithValue("@description", product.Description);
-                    cmd.Parameters.AddWithValue("@price", product.Price);
-                    cmd.Parameters.AddWithValue("@pathImage", product.PathImage);
+                    cmd.Parameters.AddWithValue("@name", classT.Name);
+                    cmd.Parameters.AddWithValue("@description", classT.Description);
+                    cmd.Parameters.AddWithValue("@price", classT.Price);
+                    cmd.Parameters.AddWithValue("@pathImage", classT.PathImage);
 
                     int result = cmd.ExecuteNonQuery();
                     if (result > 0)
@@ -110,12 +104,13 @@ namespace AtividadeFinal.Controllers
             return sucess;
         }
 
+
         /// <summary>
         /// Remove um <see cref="Product"/> do banco.
         /// </summary>
         /// <param name="productId"></param>
         /// <returns></returns>
-        public bool RemoveProduct(int productId)
+        public override bool RemoveObject(int id)
         {
             bool sucess = false;
 
@@ -126,7 +121,7 @@ namespace AtividadeFinal.Controllers
                     connection.Open();
                     string query = "DELETE FROM Products WHERE Id = @Id";
                     SQLiteCommand cmd = new SQLiteCommand(query, connection);
-                    cmd.Parameters.AddWithValue("@Id", productId);
+                    cmd.Parameters.AddWithValue("@Id", id);
 
                     int result = cmd.ExecuteNonQuery();
                     if (result > 0)
@@ -145,7 +140,7 @@ namespace AtividadeFinal.Controllers
         /// </summary>
         /// <param name="product"></param>
         /// <returns></returns>
-        public bool UpdateProduct(Product product)
+        public override bool UpdateObject(Product classT)
         {
             bool sucess = false;
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
@@ -156,11 +151,11 @@ namespace AtividadeFinal.Controllers
                     string query = "UPDATE Products SET name = @name, description = @description, price = @price, " +
                         "pathImage = @pathImage WHERE Id = @Id";
                     SQLiteCommand cmd = new SQLiteCommand(query, connection);
-                    cmd.Parameters.AddWithValue("@Id", product.Id);
-                    cmd.Parameters.AddWithValue("@name", product.Name);
-                    cmd.Parameters.AddWithValue("@description", product.Description);
-                    cmd.Parameters.AddWithValue("@price", product.Price);
-                    cmd.Parameters.AddWithValue("@pathImage", product.PathImage);
+                    cmd.Parameters.AddWithValue("@Id", classT.Id);
+                    cmd.Parameters.AddWithValue("@name", classT.Name);
+                    cmd.Parameters.AddWithValue("@description", classT.Description);
+                    cmd.Parameters.AddWithValue("@price", classT.Price);
+                    cmd.Parameters.AddWithValue("@pathImage", classT.PathImage);
 
                     int result = cmd.ExecuteNonQuery();
                     if (result > 0)

@@ -72,7 +72,7 @@ namespace AtividadeFinal.Views
         private void btnAdd_Click(object sender, EventArgs e)
         {
             Product product = createProductFromFields();
-            bool productIsAdded = controller.AddProduct(product);
+            bool productIsAdded = controller.AddObject(product);
 
             if (!productIsAdded)
             {
@@ -103,7 +103,7 @@ namespace AtividadeFinal.Views
                 if (result == DialogResult.Yes)
                 {
                     Product product = createProductFromFields(Convert.ToInt32(row.Cells["col-id"].Value));
-                    bool isEdited = controller.UpdateProduct(product);
+                    bool isEdited = controller.UpdateObject(product);
                     if (!isEdited)
                     {
                         MessageBox.Show("Houve algum erro durante a edição do produto.", "Informação", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -136,7 +136,7 @@ namespace AtividadeFinal.Views
                 DialogResult result = MessageBox.Show("Tem certeza que deseja excluir este registro?", "Atenção", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
                 if (result == DialogResult.Yes)
                 {
-                    controller.RemoveProduct(Convert.ToInt32(row.Cells["col-id"].Value));
+                    controller.RemoveObject(Convert.ToInt32(row.Cells["col-id"].Value));
                     this.Close();
                 }
                 else
@@ -158,7 +158,7 @@ namespace AtividadeFinal.Views
         /// <param name="controller"></param>
         private void GetAllProducts(ProductController controller)
         {
-            List<Product> products = controller.GetAllProducts();
+            List<Product> products = controller.GetAllRegistry();
             if (products.Count > 0)
             {
                 dataGridProducts.DataSource = null; // reseta a fonte de dados

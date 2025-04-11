@@ -43,7 +43,7 @@ namespace AtividadeFinal
         /// <param name="e"></param>
         private void btnProducts_Click(object sender, EventArgs e)
         {
-            ProductController productController = new ProductController(connectionString);
+            ProductController productController = new ProductController();
             FormProducts formProducts = new FormProducts(productController);
             formProducts.ShowDialog();
         }
