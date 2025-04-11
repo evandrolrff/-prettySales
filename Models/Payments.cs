@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AtividadeFinal.Controllers;
+using System;
 using System.Data.SQLite;
 
 namespace AtividadeFinal.Models
@@ -60,10 +61,19 @@ namespace AtividadeFinal.Models
         public Payments FromReader(SQLiteDataReader reader)
         {
             Id = reader.GetInt32(reader.GetOrdinal("id"));
-            //User = reader.GetInt32(reader.GetOrdinal("userId"));
-            //Sale = reader.GetInt32(reader.GetOrdinal("saleId")); => PODE SER NULO
+            User = new UserController().GetObjectById(reader.GetInt32(reader.GetOrdinal("userId")));
             Amount = reader.GetInt32(reader.GetOrdinal("amount"));
             PaymentDate = reader.GetDateTime(reader.GetOrdinal("paymentDate"));
+
+            try
+            {
+                Sale = new SalesController().GetObjectById(reader.GetInt32(reader.GetOrdinal("saleId")));
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Erro: {ex}");
+                Sale = new Sales();
+            }
 
             return this;
         }

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using AtividadeFinal.Models;
 using System.Data.SQLite;
-using System.Linq;
 using System;
 
 
@@ -74,7 +73,7 @@ namespace AtividadeFinal.Controllers
         /// <summary>
         /// Adiciona no banco um <see cref="User"/>.
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="classT"></param>
         /// <returns></returns>
         public override bool AddObject(User classT)
         {
@@ -110,7 +109,7 @@ namespace AtividadeFinal.Controllers
         /// <summary>
         /// Remove um <see cref="User"/> do banco.
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
         public override bool RemoveObject(int id)
         {
@@ -140,7 +139,7 @@ namespace AtividadeFinal.Controllers
         /// <summary>
         /// Atualiza no banco um <see cref="User"/> especifico.
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="classT"></param>
         /// <returns></returns>
         public override bool UpdateObject(User classT)
         {

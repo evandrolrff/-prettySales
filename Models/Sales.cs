@@ -1,5 +1,6 @@
 ﻿using System.Data.SQLite;
 using System;
+using AtividadeFinal.Controllers;
 
 namespace AtividadeFinal.Models
 {
@@ -55,10 +56,11 @@ namespace AtividadeFinal.Models
         public Sales FromReader(SQLiteDataReader reader)
         {
             Id = reader.GetInt32(reader.GetOrdinal("id"));
-            //User = reader.GetInt32(reader.GetOrdinal("userId"));
-            //Product = reader.GetInt32(reader.GetOrdinal("productId"));
             Quantity = reader.GetInt32(reader.GetOrdinal("quanity"));
             SaleDate = reader.GetDateTime(reader.GetOrdinal("saleDate"));
+
+            User = new UserController().GetObjectById(reader.GetInt32(reader.GetOrdinal("userId")));
+            Product = new ProductController().GetObjectById(reader.GetInt32(reader.GetOrdinal("productId")));
 
             return this;
         }
