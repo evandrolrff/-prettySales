@@ -22,15 +22,35 @@ namespace AtividadeFinal.Models
 
         public Payments() { }
 
-        public int Id { get { return id; } set { id = value; } }
+        public int Id 
+        {
+            get { return id; }
+            set { id = value; }
+        }
 
-        public User User { get { return user; }  set { user = value; } }
+        public User User 
+        { 
+            get { return user; }  
+            set { user = value; } 
+        }
 
-        public Sales Sale { get { return sale; } set { sale = value; } }
+        public Sales Sale 
+        { 
+            get { return sale; } 
+            set { sale = value; } 
+        }
 
-        public int Amount { get { return amount; } set { amount = value; } }
+        public int Amount 
+        { 
+            get { return amount; } 
+            set { amount = value; } 
+        }
 
-        public DateTime PaymentDate { get { return paymentDate; } set { paymentDate = value; } }
+        public DateTime PaymentDate 
+        { 
+            get { return paymentDate; } 
+            set { paymentDate = value; } 
+        }
 
         private static string ConvertTimeStampToString(DateTime value)
         {

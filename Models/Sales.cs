@@ -22,15 +22,35 @@ namespace AtividadeFinal.Models
 
         public Sales() { }
 
-        public int Id { get { return id; } set { id = value; } }
+        public int Id 
+        { 
+            get { return id; } 
+            set { id = value; }
+        }
 
-        public User User { get { return user; } set { user = value; } }
+        public User User 
+        { 
+            get { return user; }
+            set { user = value; }
+        }
 
-        public Product Product { get { return product; } set { product = value; } }
+        public Product Product 
+        { 
+            get { return product; }
+            set { product = value; }
+        }
 
-        public int Quantity { get { return quantity; } set { quantity = value; } }
+        public int Quantity 
+        { 
+            get { return quantity; }
+            set { quantity = value; }
+        }
 
-        public DateTime SaleDate { get { return saleDate; } set { saleDate = value; } }
+        public DateTime SaleDate 
+        { 
+            get { return saleDate; } 
+            set { saleDate = value; }
+        }
 
         public Sales FromReader(SQLiteDataReader reader)
         {
