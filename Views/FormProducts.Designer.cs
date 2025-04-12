@@ -186,6 +186,8 @@ namespace AtividadeFinal.Views
             this.Controls.Add(this.txtName);
             this.Name = "FormProducts";
             this.Text = "FormProducts";
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             ((System.ComponentModel.ISupportInitialize)(this.dataGridProducts)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AtividadeFinal
@@ -18,10 +14,7 @@ namespace AtividadeFinal
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            AppDomain.CurrentDomain.SetData("DataDirectory", AppDomain.CurrentDomain.BaseDirectory);
-            string connectionString = ConfigurationManager.ConnectionStrings["ConnectionBD"].ConnectionString;
-
-            Application.Run(new MainForm(connectionString));
+            Application.Run(new MainForm());
         }
     }
 }

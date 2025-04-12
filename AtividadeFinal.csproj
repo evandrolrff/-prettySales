@@ -139,10 +139,22 @@
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\SalesController.cs" />
     <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="MainForm.cs">
+    <Compile Include="Views\FormPayments.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
+    <Compile Include="Views\FormPayments.Designer.cs">
+      <DependentUpon>FormPayments.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FormSales.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\FormSales.Designer.cs">
+      <DependentUpon>FormSales.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Payments.cs" />
@@ -163,13 +175,19 @@
     <Compile Include="Views\FormUsers.Designer.cs">
       <DependentUpon>FormUsers.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Views\FormPayments.resx">
+      <DependentUpon>FormPayments.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\FormProducts.resx">
       <DependentUpon>FormProducts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\FormSales.resx">
+      <DependentUpon>FormSales.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\FormUsers.resx">
       <DependentUpon>FormUsers.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
+    <EmbeddedResource Include="Views\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

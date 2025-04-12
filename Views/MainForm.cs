@@ -7,12 +7,9 @@ namespace AtividadeFinal
 {
     public partial class MainForm : Form
     {
-        private readonly string connectionString;
-
-        public MainForm(string connectionString)
+        public MainForm()
         {
             InitializeComponent();
-            this.connectionString = connectionString;
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
         }
 
@@ -38,6 +35,20 @@ namespace AtividadeFinal
             ProductController productController = new ProductController();
             FormProducts formProducts = new FormProducts(productController);
             formProducts.ShowDialog();
+        }
+
+        private void btnSales_Click(object sender, EventArgs e)
+        {
+            SalesController salesController = new SalesController();
+            FormSales formSales = new FormSales();
+            formSales.ShowDialog();
+        }
+
+        private void btnPayments_Click(object sender, EventArgs e)
+        {
+            PaymentsController paymentsController = new PaymentsController();
+            FormPayments formPayments = new FormPayments();
+            formPayments.ShowDialog();
         }
     }
 }

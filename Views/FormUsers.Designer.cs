@@ -206,6 +206,8 @@ namespace AtividadeFinal
             this.MaximizeBox = false;
             this.Name = "FormUsers";
             this.Text = "User";
+            this.MaximizeBox = false;
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
             ((System.ComponentModel.ISupportInitialize)(this.dataGridUsers)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
