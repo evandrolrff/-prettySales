@@ -8,7 +8,9 @@ namespace AtividadeFinal.Models
     {
         private int id;
         private User user;
+        public string UserName;
         private Product product;
+        public string ProductName;
         private int quantity;
         private DateTime saleDate;
 
@@ -32,13 +34,21 @@ namespace AtividadeFinal.Models
         public User User 
         { 
             get { return user; }
-            set { user = value; }
+            set 
+            { 
+                user = value;
+                UserName = $"{user.Name} {user.LastName}";
+            }
         }
 
         public Product Product 
         { 
             get { return product; }
-            set { product = value; }
+            set 
+            { 
+                product = value;
+                ProductName = product.Name;
+            }
         }
 
         public int Quantity 

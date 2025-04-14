@@ -139,6 +139,12 @@
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\SalesController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Views\FormListObjects.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\FormListObjects.Designer.cs">
+      <DependentUpon>FormListObjects.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\FormPayments.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -175,6 +181,9 @@
     <Compile Include="Views\FormUsers.Designer.cs">
       <DependentUpon>FormUsers.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Views\FormListObjects.resx">
+      <DependentUpon>FormListObjects.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\FormPayments.resx">
       <DependentUpon>FormPayments.cs</DependentUpon>
     </EmbeddedResource>

@@ -1,4 +1,5 @@
 ﻿using AtividadeFinal.Controllers;
+using AtividadeFinal.Models;
 using AtividadeFinal.Views;
 using System;
 using System.Windows.Forms;
@@ -20,9 +21,11 @@ namespace AtividadeFinal
         /// <param name="e"></param>
         private void btnUser_Click(object sender, EventArgs e)
         {
-            UserController userController = new UserController();
-            FormUsers formUsers = new FormUsers(userController);
-            formUsers.ShowDialog();
+            FormListObjects formListObjects = new FormListObjects("users");
+            formListObjects.ShowDialog();
+            //UserController userController = new UserController();
+            //FormUsers formUsers = new FormUsers(userController);
+            //formUsers.ShowDialog();
         }
 
         /// <summary>
@@ -32,23 +35,32 @@ namespace AtividadeFinal
         /// <param name="e"></param>
         private void btnProducts_Click(object sender, EventArgs e)
         {
-            ProductController productController = new ProductController();
-            FormProducts formProducts = new FormProducts(productController);
-            formProducts.ShowDialog();
+            FormListObjects formListObjects = new FormListObjects("products");
+            formListObjects.ShowDialog();
+
+            //ProductController productController = new ProductController();
+            //FormProducts formProducts = new FormProducts(productController);
+            //formProducts.ShowDialog();
         }
 
         private void btnSales_Click(object sender, EventArgs e)
         {
-            SalesController salesController = new SalesController();
-            FormSales formSales = new FormSales();
-            formSales.ShowDialog();
+            FormListObjects formListObjects = new FormListObjects("sales");
+            formListObjects.ShowDialog();
+
+            //SalesController salesController = new SalesController();
+            //FormSales formSales = new FormSales();
+            //formSales.ShowDialog();
         }
 
         private void btnPayments_Click(object sender, EventArgs e)
         {
-            PaymentsController paymentsController = new PaymentsController();
-            FormPayments formPayments = new FormPayments();
-            formPayments.ShowDialog();
+            FormListObjects formListObjects = new FormListObjects("payments");
+            formListObjects.ShowDialog();
+
+            //PaymentsController paymentsController = new PaymentsController();
+            //FormPayments formPayments = new FormPayments();
+            //formPayments.ShowDialog();
         }
     }
 }
