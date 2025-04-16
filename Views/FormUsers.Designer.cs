@@ -41,19 +41,17 @@ namespace AtividadeFinal
             this.label4 = new System.Windows.Forms.Label();
             this.txtComplement = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.dataGridUsers = new System.Windows.Forms.DataGridView();
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnDel = new System.Windows.Forms.Button();
             this.btnReturn = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridUsers)).BeginInit();
             this.SuspendLayout();
             // 
             // txtName
             // 
             this.txtName.Location = new System.Drawing.Point(42, 54);
             this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(298, 20);
+            this.txtName.Size = new System.Drawing.Size(517, 20);
             this.txtName.TabIndex = 0;
             // 
             // label1
@@ -69,7 +67,7 @@ namespace AtividadeFinal
             // 
             this.txtLastName.Location = new System.Drawing.Point(45, 110);
             this.txtLastName.Name = "txtLastName";
-            this.txtLastName.Size = new System.Drawing.Size(295, 20);
+            this.txtLastName.Size = new System.Drawing.Size(514, 20);
             this.txtLastName.TabIndex = 2;
             // 
             // label2
@@ -85,7 +83,7 @@ namespace AtividadeFinal
             // 
             this.txtAddress.Location = new System.Drawing.Point(45, 177);
             this.txtAddress.Name = "txtAddress";
-            this.txtAddress.Size = new System.Drawing.Size(352, 20);
+            this.txtAddress.Size = new System.Drawing.Size(514, 20);
             this.txtAddress.TabIndex = 4;
             // 
             // label3
@@ -101,7 +99,7 @@ namespace AtividadeFinal
             // 
             this.txtNumber.Location = new System.Drawing.Point(45, 232);
             this.txtNumber.Name = "txtNumber";
-            this.txtNumber.Size = new System.Drawing.Size(100, 20);
+            this.txtNumber.Size = new System.Drawing.Size(164, 20);
             this.txtNumber.TabIndex = 6;
             // 
             // label4
@@ -115,7 +113,7 @@ namespace AtividadeFinal
             // 
             // txtComplement
             // 
-            this.txtComplement.Location = new System.Drawing.Point(210, 232);
+            this.txtComplement.Location = new System.Drawing.Point(254, 232);
             this.txtComplement.Name = "txtComplement";
             this.txtComplement.Size = new System.Drawing.Size(187, 20);
             this.txtComplement.TabIndex = 8;
@@ -123,25 +121,11 @@ namespace AtividadeFinal
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(207, 216);
+            this.label5.Location = new System.Drawing.Point(251, 216);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(71, 13);
             this.label5.TabIndex = 9;
             this.label5.Text = "Complemento";
-            // 
-            // dataGridUsers
-            // 
-            this.dataGridUsers.AllowUserToAddRows = false;
-            this.dataGridUsers.AllowUserToDeleteRows = false;
-            this.dataGridUsers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridUsers.Location = new System.Drawing.Point(42, 286);
-            this.dataGridUsers.Name = "dataGridUsers";
-            this.dataGridUsers.ReadOnly = true;
-            this.dataGridUsers.Size = new System.Drawing.Size(635, 205);
-            this.dataGridUsers.TabIndex = 10;
-            this.dataGridUsers.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridUsers_CellContentClick);
-            this.dataGridUsers.SelectionChanged += new System.EventHandler(this.dataGridUsers_SelectionChanged);
-            this.dataGridUsers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             // 
             // btnAdd
             // 
@@ -175,7 +159,7 @@ namespace AtividadeFinal
             // 
             // btnReturn
             // 
-            this.btnReturn.Location = new System.Drawing.Point(602, 527);
+            this.btnReturn.Location = new System.Drawing.Point(45, 289);
             this.btnReturn.Name = "btnReturn";
             this.btnReturn.Size = new System.Drawing.Size(75, 23);
             this.btnReturn.TabIndex = 14;
@@ -187,12 +171,11 @@ namespace AtividadeFinal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(699, 584);
+            this.ClientSize = new System.Drawing.Size(699, 328);
             this.Controls.Add(this.btnReturn);
             this.Controls.Add(this.btnDel);
             this.Controls.Add(this.btnEdit);
             this.Controls.Add(this.btnAdd);
-            this.Controls.Add(this.dataGridUsers);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.txtComplement);
             this.Controls.Add(this.label4);
@@ -203,38 +186,16 @@ namespace AtividadeFinal
             this.Controls.Add(this.txtLastName);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtName);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "FormUsers";
             this.Text = "User";
-            this.MaximizeBox = false;
-            this.FormBorderStyle = FormBorderStyle.FixedSingle;
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridUsers)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private void ConfigureDataGridView()
-        {
-            dataGridUsers.AutoGenerateColumns = false;
-
-            DataGridViewTextBoxColumn colId;
-            foreach (KeyValuePair<string, string> valuePair in columnsDataGridUsers)
-            {
-                colId = new DataGridViewTextBoxColumn();
-                colId.Name = $"col-{valuePair.Key}";
-                colId.HeaderText = valuePair.Value;
-                colId.DataPropertyName = valuePair.Key; // Nome da propriedade no objeto de dados
-
-                if(colId.DataPropertyName == "id")
-                {
-                    colId.Visible = false;
-                }
-                dataGridUsers.Columns.Add(colId);
-            }
-        }
 
         private System.Windows.Forms.TextBox txtName;
         private System.Windows.Forms.Label label1;
@@ -246,7 +207,6 @@ namespace AtividadeFinal
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtComplement;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.DataGridView dataGridUsers;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Button btnEdit;
         private System.Windows.Forms.Button btnDel;
