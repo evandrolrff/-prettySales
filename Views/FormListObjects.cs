@@ -37,7 +37,11 @@ namespace AtividadeFinal.Views
                     }
                     break;
                 case ObjectType.Product:
-                    new FormProducts().ShowDialog();
+                    using (FormProducts form = new FormProducts())
+                    {
+                        form.DataChanged += (s, args) => RefreshData();
+                        form.ShowDialog();
+                    }
                     break;
                 case ObjectType.Sale:
                     new FormSales().ShowDialog();
@@ -193,6 +197,11 @@ namespace AtividadeFinal.Views
                     break;
                 case ObjectType.Product:
                     Product product = new ProductController().GetObjectById(id);
+                    using (FormProducts form = new FormProducts(product))
+                    {
+                        form.DataChanged += (s, args) => RefreshData();
+                        form.ShowDialog();
+                    }
                     break;
                 case ObjectType.Sale:
                     Sales sale = new SalesController().GetObjectById(id);
