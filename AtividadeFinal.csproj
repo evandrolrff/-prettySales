@@ -139,6 +139,7 @@
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\SalesController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Views\DataGridCol\DataGridColumnsConfig.cs" />
     <Compile Include="Views\FormListObjects.cs">
       <SubType>Form</SubType>
     </Compile>

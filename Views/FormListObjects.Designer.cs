@@ -59,6 +59,7 @@ namespace AtividadeFinal.Views
             dataGridViewObjects.ReadOnly = true;
             dataGridViewObjects.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridViewObjects.AutoGenerateColumns = false;
+            dataGridViewObjects.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridObjects_CellContentClick);
             // 
             // btnReturn
             // 

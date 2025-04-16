@@ -1,6 +1,8 @@
 ﻿using AtividadeFinal.Controllers;
 using AtividadeFinal.Models;
+using AtividadeFinal.Views.DataGridColumns;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
@@ -8,48 +10,14 @@ namespace AtividadeFinal.Views
 {
     public partial class FormListObjects : Form
     {
+        private readonly ObjectType objectType;
 
-        private readonly Dictionary<string, string> columnsDataGridUsers = new Dictionary<string, string>
+        public FormListObjects(ObjectType objectType)
         {
-            { "id", "ID"},
-            { "name" , "Nome"},
-            { "lastName", "Sobrenome"},
-            { "address", "Endereço"},
-            { "number", "Número"},
-            { "complement", "Complemento"}
-        };
+            this.objectType = objectType;
 
-        private readonly Dictionary<string, string> columnsDataGridProducts = new Dictionary<string, string>
-        {
-            { "id", "ID"},
-            { "name" , "Nome"},
-            { "description", "Descrição"},
-            { "price", "Preço"},
-            { "pathImage", "URL"}
-        };
-
-        private readonly Dictionary<string, string> columnsDataGridSales = new Dictionary<string, string>
-        {
-            { "id", "ID"},
-            { "UserName" , "Cliente"},
-            { "ProductName", "Produto"},
-            { "quantity", "Quantidade"},
-            { "saleDate", "Data da Venda"}
-        };
-
-        private readonly Dictionary<string, string> columnsDataGridPayments = new Dictionary<string, string>
-        {
-            { "id", "ID"},
-            { "userId" , "Cliente"},
-            { "saleId", "Venda"},
-            { "amount", "Valor"},
-            { "paymentDate", "Data do Pagamento"}
-        };
-
-        public FormListObjects(string typeObject)
-        {
             InitializeComponent();
-            ConfigureDataGridView(typeObject);
+            ConfigureDataGridView();
         }
 
         private void btnReturn_Click(object sender, EventArgs e)
@@ -59,114 +27,183 @@ namespace AtividadeFinal.Views
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-
+            switch (objectType)
+            {
+                case ObjectType.User:
+                    using (FormUsers form = new FormUsers())
+                    {
+                        form.DataChanged += (s, args) => RefreshData();
+                        form.ShowDialog();
+                    }
+                    break;
+                case ObjectType.Product:
+                    new FormProducts().ShowDialog();
+                    break;
+                case ObjectType.Sale:
+                    new FormSales().ShowDialog();
+                    break;
+                case ObjectType.Payment:
+                    new FormPayments().ShowDialog();
+                    break;
+                default:
+                    throw new ArgumentException("Tipo de objeto inválido");
+            }
         }
 
-        private void ConfigureDataGridView(string typeObject)
+        private void ConfigureDataGridView()
         {
-            DataGridViewTextBoxColumn colId;
-
             try
             {
-                foreach (KeyValuePair<string, string> valuePair in WhatDataShouldLoad(typeObject))
-                {
-                    colId = new DataGridViewTextBoxColumn();
-                    colId.Name = $"col-{valuePair.Key}";
-                    colId.HeaderText = valuePair.Value;
-                    colId.DataPropertyName = valuePair.Key; // Nome da propriedade no objeto de dados
+                dataGridViewObjects.Columns.Clear();
 
-                    if (colId.DataPropertyName == "id")
+                Dictionary<string, string> columnsConfig = GetColumnsConfig();
+                foreach (KeyValuePair<string, string> column in columnsConfig)
+                {
+                    var dataColumn = new DataGridViewTextBoxColumn
                     {
-                        colId.Visible = false;
-                    }
-                    dataGridViewObjects.Columns.Add(colId);
+                        Name = $"col-{column.Key}",
+                        HeaderText = column.Value,
+                        DataPropertyName = column.Key,
+                        Visible = column.Key != "id"
+                    };
+                    dataGridViewObjects.Columns.Add(dataColumn);
                 }
+
+                LoadData();
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erro ao configurar o DataGridView: {ex.Message}");
-                MessageBox.Show($"Erro ao carregar a exibição!");
-                this.Close();
+                HandleError(ex);
             }
         }
 
-        private Dictionary<string, string> WhatDataShouldLoad(string typeObject)
+        private void LoadData()
         {
-            switch (typeObject) 
-            {
-                case "users":
-                    GetAllObjects<User>(typeObject);
-                    return columnsDataGridUsers;
-                case "products":
-                    GetAllObjects<Product>(typeObject);
-                    return columnsDataGridProducts;
-                case "sales":
-                    GetAllObjects<Sales>(typeObject);
-                    return columnsDataGridSales;
-                case "payments":
-                    GetAllObjects<Payments>(typeObject);
-                    return columnsDataGridPayments;
-                default:
-                    return null;
-            }
-        }
+            IList data = null;
 
-        private void GetAllObjects<T>(string typeObject) where T : class
-        {
-            T obj = GetTypeOject<T>(typeObject);
-            List<T> objects = null;
-
-            switch (typeObject)
+            switch (objectType)
             {
-                case "users":
-                    UserController userController = new UserController();
-                    objects = userController.GetAllRegistry() as List<T>;
+                case ObjectType.User:
+                    data = new UserController().GetAllRegistry();
                     break;
-                case "products":
-                    ProductController productController = new ProductController();
-                    objects = productController.GetAllRegistry() as List<T>;
+                case ObjectType.Product:
+                    data = new ProductController().GetAllRegistry();
                     break;
-                case "sales":
-                    SalesController salesController = new SalesController();
-                    objects = salesController.GetAllRegistry() as List<T>;
+                case ObjectType.Sale:
+                    data = new SalesController().GetAllRegistry();
                     break;
-                case "payments":
-                    PaymentsController paymentsController = new PaymentsController();
-                    objects = paymentsController.GetAllRegistry() as List<T>;
+                case ObjectType.Payment:
+                    data = new PaymentsController().GetAllRegistry();
                     break;
                 default:
-                    MessageBox.Show("Tipo de objeto inválido.");
-                    throw new ArgumentException($"Tipo '{typeObject}' não encontrado.");
+                    throw new ArgumentException("Tipo de objeto inválido");
             }
 
-            if (objects.Count > 0)
-            {
-                dataGridViewObjects.DataSource = null; // reseta a fonte de dados
-                dataGridViewObjects.DataSource = objects; // Atribui a lista ao DataGridView
-            }
-            else
+            if (data == null || data.Count == 0)
             {
                 dataGridViewObjects.Enabled = false;
-                dataGridViewObjects.Enabled = false;
+                return;
+            }
+
+            dataGridViewObjects.DataSource = data;
+        }
+
+        public void RefreshData()
+        {
+            try
+            {
+                var firstDisplayedRow = dataGridViewObjects.FirstDisplayedScrollingRowIndex;
+
+                // Limpa o binding para forçar recarregamento
+                dataGridViewObjects.DataSource = null;
+
+                // Recarrega os dados
+                LoadData();
+
+                // Restaura a posição de rolagem
+                if (firstDisplayedRow >= 0 && firstDisplayedRow < dataGridViewObjects.Rows.Count)
+                {
+                    dataGridViewObjects.FirstDisplayedScrollingRowIndex = firstDisplayedRow;
+                }
+
+                // Habilita o grid se estiver desabilitado
+                dataGridViewObjects.Enabled = true;
+            }
+            catch (Exception ex)
+            {
+                HandleError(ex);
             }
         }
 
-        private T GetTypeOject<T>(string typeObject) where T : class
+        private Dictionary<string, string> GetColumnsConfig()
         {
-            switch (typeObject)
+            switch(objectType)
             {
-                case "users":
-                    return new User() as T;
-                case "products":
-                    return new Product() as T;
-                case "sales":
-                    return new Sales() as T;
-                case "payments":
-                    return new Payments() as T;
+                case ObjectType.User:
+                    return DataGridColumnsConfig.Users;
+                case ObjectType.Product:
+                    return DataGridColumnsConfig.Products;
+                case ObjectType.Sale:
+                    return DataGridColumnsConfig.Sales;
+                case ObjectType.Payment:
+                    return DataGridColumnsConfig.Payments;
                 default:
-                    Console.WriteLine("Tipo de objeto inválido.");
-                    throw new ArgumentException($"Tipo '{typeObject}' não encontrado.");
+                    throw new ArgumentException("Tipo de objeto inválido"); 
             }
         }
+
+        private void HandleError(Exception ex)
+        {
+            Console.WriteLine($"Erro: {ex.Message}");
+            MessageBox.Show("Erro ao carregar a exibição!");
+            Close();
+        }
+
+        /// <summary>
+        /// Preenche os campos de acordo com o registro selecionado do DataGridView <see cref="DataGridView.Rows">
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dataGridObjects_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Verifica se o clique foi em uma linha válida (não no cabeçalho)
+            if (e.RowIndex >= 0)
+            {
+                // Obtém a linha selecionada
+                DataGridViewRow selectedRow = dataGridViewObjects.Rows[e.RowIndex];
+
+                CreateObjectAndInitilizeForm(selectedRow);
+            }
+        }
+
+        private void CreateObjectAndInitilizeForm(DataGridViewRow row)
+        {
+            // Should be the same of all structres of <see cref="DataGridColumnsConfig"/>
+            int id = Convert.ToInt32(row.Cells[$"col-id"].Value); 
+            
+            switch (objectType)
+            {
+                case ObjectType.User:
+                    User user = new UserController().GetObjectById(id);
+                    using (FormUsers form = new FormUsers(user))
+                    {
+                        form.DataChanged += (s, args) => RefreshData();
+                        form.ShowDialog();
+                    }
+                    break;
+                case ObjectType.Product:
+                    Product product = new ProductController().GetObjectById(id);
+                    break;
+                case ObjectType.Sale:
+                    Sales sale = new SalesController().GetObjectById(id);
+                    break;
+                case ObjectType.Payment:
+                    Payments payment = new PaymentsController().GetObjectById(id);
+                    break;
+                default:
+                    throw new ArgumentException("Tipo de objeto inválido");
+            }
+        }
+
     }
 }

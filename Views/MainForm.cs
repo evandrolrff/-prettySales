@@ -1,6 +1,5 @@
-﻿using AtividadeFinal.Controllers;
-using AtividadeFinal.Models;
-using AtividadeFinal.Views;
+﻿using AtividadeFinal.Views;
+using AtividadeFinal.Views.DataGridColumns;
 using System;
 using System.Windows.Forms;
 
@@ -21,11 +20,8 @@ namespace AtividadeFinal
         /// <param name="e"></param>
         private void btnUser_Click(object sender, EventArgs e)
         {
-            FormListObjects formListObjects = new FormListObjects("users");
+            FormListObjects formListObjects = new FormListObjects(ObjectType.User);
             formListObjects.ShowDialog();
-            //UserController userController = new UserController();
-            //FormUsers formUsers = new FormUsers(userController);
-            //formUsers.ShowDialog();
         }
 
         /// <summary>
@@ -35,32 +31,20 @@ namespace AtividadeFinal
         /// <param name="e"></param>
         private void btnProducts_Click(object sender, EventArgs e)
         {
-            FormListObjects formListObjects = new FormListObjects("products");
+            FormListObjects formListObjects = new FormListObjects(ObjectType.Product);
             formListObjects.ShowDialog();
-
-            //ProductController productController = new ProductController();
-            //FormProducts formProducts = new FormProducts(productController);
-            //formProducts.ShowDialog();
         }
 
         private void btnSales_Click(object sender, EventArgs e)
         {
-            FormListObjects formListObjects = new FormListObjects("sales");
+            FormListObjects formListObjects = new FormListObjects(ObjectType.Sale);
             formListObjects.ShowDialog();
-
-            //SalesController salesController = new SalesController();
-            //FormSales formSales = new FormSales();
-            //formSales.ShowDialog();
         }
 
         private void btnPayments_Click(object sender, EventArgs e)
         {
-            FormListObjects formListObjects = new FormListObjects("payments");
+            FormListObjects formListObjects = new FormListObjects(ObjectType.Payment);
             formListObjects.ShowDialog();
-
-            //PaymentsController paymentsController = new PaymentsController();
-            //FormPayments formPayments = new FormPayments();
-            //formPayments.ShowDialog();
         }
     }
 }
