@@ -7,8 +7,9 @@ namespace AtividadeFinal
 {
     public partial class FormUsers : Form
     {
-        private UserController controller;
-        private User myUser;
+        private readonly UserController controller;
+        private readonly User myUser;
+        private readonly bool isEditMode = false;
 
         public event EventHandler DataChanged;
 
@@ -19,6 +20,7 @@ namespace AtividadeFinal
 
             if (user != null)
             {
+                isEditMode = true;
                 myUser = user;
 
                 txtName.Text = user.Name;
@@ -27,6 +29,8 @@ namespace AtividadeFinal
                 txtNumber.Text = user.Number;
                 txtComplement.Text = user.Complement;
             }
+
+            EnablesAndDisablesButtons();
         }
 
         #region EventsButtons
@@ -151,6 +155,26 @@ namespace AtividadeFinal
             }
 
             return user;
+        }
+
+        private void EnablesAndDisablesButtons()
+        {
+            if (isEditMode)
+            {
+                btnAdd.Enabled = false;
+                btnEdit.Enabled = true;
+                btnDel.Enabled = true;
+                this.Text = "Editar Usuário";
+                btnEdit.Text = "Salvar Alterações";
+            }
+            else
+            {
+                btnAdd.Enabled = true;
+                btnEdit.Enabled = false;
+                btnDel.Enabled = false;
+                this.Text = "Adicionar Novo Usuário";
+            }
+
         }
         #endregion
     }
