@@ -116,11 +116,11 @@ namespace AtividadeFinal
             if (result == DialogResult.Yes)
             {
                 controller.RemoveObject(myUser.Id);
+                DataChanged?.Invoke(this, EventArgs.Empty);
                 this.Close();
             }
             else
             {
-                DataChanged?.Invoke(this, EventArgs.Empty);
                 this.Close();
             }
         }
