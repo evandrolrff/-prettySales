@@ -1,7 +1,6 @@
 ﻿using AtividadeFinal.Controllers;
 using AtividadeFinal.Models;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
