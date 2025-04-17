@@ -73,7 +73,7 @@ namespace AtividadeFinal.Models
                 }
                 else
                 {
-                    PathImage = "";
+                    pathImage = string.Empty;
                 }
             } 
         }

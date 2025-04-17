@@ -111,7 +111,7 @@ namespace AtividadeFinal.Views
                 myProduct.Name = txtName.Text;
                 myProduct.Description = txtDescription.Text;
                 myProduct.Price = float.Parse(txtPrice.Text, CultureInfo.InvariantCulture.NumberFormat);
-                myProduct.PathImage = labelPathImage.Text;
+                myProduct.PathImage = labelPathImage.Text ?? string.Empty;
 
                 bool isEdited = controller.UpdateObject(myProduct);
                 if (!isEdited)
@@ -185,7 +185,7 @@ namespace AtividadeFinal.Views
                     Name = txtName.Text,
                     Description = txtDescription.Text,
                     Price = numero,
-                    PathImage = labelPathImage.Text,
+                    PathImage = labelPathImage.Text ?? string.Empty,
                 };
 
                 if (productId != 0)
