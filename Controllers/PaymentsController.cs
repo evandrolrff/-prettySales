@@ -81,6 +81,41 @@ namespace AtividadeFinal.Controllers
             return payments;
         }
 
+        public List<Sales> GetUserSales(User user)
+        {
+            List<Sales> sales = new List<Sales>();
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT id, userId, productId, quantity, saleDate "+
+                            "FROM Sales WHERE userId = @userId";
+
+                    using (SQLiteCommand cmd = new SQLiteCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@userId", user.Id);
+
+                        using (SQLiteDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Sales sale = new Sales();
+                                sales.Add(sale.FromReader(reader));
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Erro ao buscar compras do usuário: " + ex.Message);
+                }
+            }
+
+            return sales;
+        }
+
         /// <summary>
         /// Retorna um <see cref="Payments"/> do banco de dados a partir de um id.
         /// </summary>
