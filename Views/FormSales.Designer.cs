@@ -169,6 +169,7 @@ namespace AtividadeFinal.Views
             this.Controls.Add(this.comboBoxProducts);
             this.Controls.Add(this.comboBoxUsers);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "FormSales";
             this.Text = "FormSales";
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownQuantity)).EndInit();

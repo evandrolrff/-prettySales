@@ -82,8 +82,9 @@ namespace AtividadeFinal.Views
             this.Name = "FormListObjects";
             this.Text = "FormListObjects";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewObjects)).EndInit();
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.ResumeLayout(false);
-
         }
 
         #endregion
