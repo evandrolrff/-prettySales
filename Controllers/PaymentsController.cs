@@ -81,6 +81,12 @@ namespace AtividadeFinal.Controllers
             return payments;
         }
 
+        /// <summary>
+        /// Retorna uma lista de <see cref="Sales"/> do banco de dados
+        /// a partir de um <see cref="User"/>.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public List<Sales> GetUserSales(User user)
         {
             List<Sales> sales = new List<Sales>();

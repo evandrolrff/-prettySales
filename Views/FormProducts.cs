@@ -54,7 +54,7 @@ namespace AtividadeFinal.Views
 
         #region EventsButtons
         /// <summary>
-        /// Retorna para o menu principal <see cref="MainForm"/>
+        /// Retorna para o menu principal <see cref="FormListObjects"/>
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -145,6 +145,11 @@ namespace AtividadeFinal.Views
             }
         }
 
+        /// <summary>
+        /// Abre um <see cref="OpenFileDialog"/> para selecionar uma imagem
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnSelect_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
@@ -200,6 +205,9 @@ namespace AtividadeFinal.Views
             return product;
         }
 
+        /// <summary>
+        /// Habilita ou desabilita os botões de acordo com o modo de edição
+        /// </summary>
         private void EnablesAndDisablesButtons()
         {
             if (isEditMode)

@@ -56,7 +56,7 @@ namespace AtividadeFinal
         }
 
         /// <summary>
-        /// Retorna para o menu principal <see cref="MainForm"/>
+        /// Retorna para o menu principal <see cref="FormListObjects"/>
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -157,6 +157,9 @@ namespace AtividadeFinal
             return user;
         }
 
+        /// <summary>
+        /// Habilita ou desabilita os botões de acordo com o modo de edição.
+        /// </summary>
         private void EnablesAndDisablesButtons()
         {
             if (isEditMode)

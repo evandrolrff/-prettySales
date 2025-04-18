@@ -20,11 +20,22 @@ namespace AtividadeFinal.Views
             ConfigureDataGridView();
         }
 
+        /// <summary>
+        /// Retorna para o menu principal <see cref="MainForm"/>
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnReturn_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
+        /// <summary>
+        /// Adiciona um novo objeto de acordo com o tipo de objeto, chamando o seu respectivo formulário
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <exception cref="ArgumentException"></exception>
         private void btnAdd_Click(object sender, EventArgs e)
         {
             switch (objectType)
@@ -62,6 +73,9 @@ namespace AtividadeFinal.Views
             }
         }
 
+        /// <summary>
+        /// Configura o DataGridView <see cref="DataGridView"/> de acordo com o tipo de objeto
+        /// </summary>
         private void ConfigureDataGridView()
         {
             try
@@ -89,6 +103,10 @@ namespace AtividadeFinal.Views
             }
         }
 
+        /// <summary>
+        /// Carrega os dados do DataGridView <see cref="DataGridView"/>
+        /// </summary>
+        /// <exception cref="ArgumentException"></exception>
         private void LoadData()
         {
             IList data = null;
@@ -120,6 +138,9 @@ namespace AtividadeFinal.Views
             dataGridViewObjects.DataSource = data;
         }
 
+        /// <summary>
+        /// Atualiza os dados do DataGridView <see cref="DataGridView"/>
+        /// </summary>
         public void RefreshData()
         {
             try
@@ -147,6 +168,11 @@ namespace AtividadeFinal.Views
             }
         }
 
+        /// <summary>
+        /// Retorna o dicionário de configuração de colunas de acordo com o tipo de objeto
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
         private Dictionary<string, string> GetColumnsConfig()
         {
             switch(objectType)
@@ -164,6 +190,10 @@ namespace AtividadeFinal.Views
             }
         }
 
+        /// <summary>
+        /// Exibe uma mensagem de erro e fecha o formulário
+        /// </summary>
+        /// <param name="ex"></param>
         private void HandleError(Exception ex)
         {
             Console.WriteLine($"Erro: {ex.Message}");
@@ -188,6 +218,12 @@ namespace AtividadeFinal.Views
             }
         }
 
+        /// <summary>
+        /// Cria o objeto e inicializa o formulário correspondente com os dados do registro selecionado
+        /// para edita-lo ou exclui-lo.
+        /// </summary>
+        /// <param name="row"></param>
+        /// <exception cref="ArgumentException"></exception>
         private void CreateObjectAndInitilizeForm(DataGridViewRow row)
         {
             // Should be the same of all structres of <see cref="DataGridColumnsConfig"/>

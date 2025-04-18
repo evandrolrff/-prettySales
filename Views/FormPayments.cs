@@ -41,6 +41,10 @@ namespace AtividadeFinal.Views
             EnablesAndDisablesButtons();
         }
 
+        /// <summary>
+        /// Seleciona o valor de <see cref="comboBoxSales"/> com base no objeto <see cref="Sales"/> passado como parâmetro.
+        /// </summary>
+        /// <param name="sale"></param>
         private void SelectValueOfComboBoxSales(Sales sale)
         {
             List<Sales> lista = (List<Sales>)comboBoxSales.DataSource;
@@ -59,6 +63,11 @@ namespace AtividadeFinal.Views
 
 
         #region Utilities
+        /// <summary>
+        /// Cria um objeto <see cref="Payments"/> a partir dos campos preenchidos no formulário.
+        /// </summary>
+        /// <param name="paymentId"></param>
+        /// <returns></returns>
         private Payments createPaymentFromFields(int paymentId = 0)
         {
             Payments payment = null;
@@ -86,12 +95,18 @@ namespace AtividadeFinal.Views
             return payment;
         }
 
+        /// <summary>
+        /// Inicializa o DateTimePicker com o formato desejado.
+        /// </summary>
         private void InitilizeDateTimePicker()
         {
             dateTimePickerPayments.Format = DateTimePickerFormat.Custom;
             dateTimePickerPayments.CustomFormat = "dd/MM/yyyy HH:mm";
         }
 
+        /// <summary>
+        /// Preenche o ComboBox com os usuários e as vendas disponíveis.
+        /// </summary>
         private void InitializeComboBox()
         {
             comboBoxUsers.DataSource = new UserController().GetAllRegistry();
@@ -105,6 +120,9 @@ namespace AtividadeFinal.Views
             comboBoxSales.SelectedIndex = -1;
         }
 
+        /// <summary>
+        /// Habilita ou desabilita os botões de acordo com o modo de edição.
+        /// </summary>
         private void EnablesAndDisablesButtons()
         {
             if (isEditMode)
@@ -126,6 +144,11 @@ namespace AtividadeFinal.Views
         #endregion
 
         #region EventsButtons
+        /// <summary>
+        /// Fecha o formulário quando o botão de retorno é clicado. Retorna para <see cref="FormListObjects"/>
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnReturn_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show("Tem certeza que deseja retornar?", "Atenção", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
@@ -135,6 +158,11 @@ namespace AtividadeFinal.Views
             }
         }
 
+        /// <summary>
+        /// Adiciona um novo pagamento <see cref="Payments"/> ao banco de dados.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnAdd_Click(object sender, EventArgs e)
         {
             Payments payment = createPaymentFromFields();
@@ -151,6 +179,11 @@ namespace AtividadeFinal.Views
             }
         }
 
+        /// <summary>
+        /// Edita um pagamento <see cref="Payments"/> existente no banco de dados.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnEdit_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show("Tem certeza que deseja editar este registro?", "Atenção", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
@@ -174,6 +207,11 @@ namespace AtividadeFinal.Views
             }
         }
 
+        /// <summary>
+        /// Exclui um pagamento <see cref="Payments"/> do banco de dados.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnDel_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show("Tem certeza que deseja excluir este registro?", "Atenção", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
@@ -190,6 +228,11 @@ namespace AtividadeFinal.Views
         }
         #endregion
 
+        /// <summary>
+        /// Atualiza o ComboBox de vendas com base no usuário selecionado.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void comboBoxUsers_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboBoxUsers.SelectedItem == null)
@@ -199,7 +242,7 @@ namespace AtividadeFinal.Views
 
             User user = (User)comboBoxUsers.SelectedItem;
 
-            comboBoxSales.DataSource = new PaymentsController().GetAllPurchasesAGivenUserHasMade(user);
+            comboBoxSales.DataSource = new PaymentsController().GetUserSales(user);
             comboBoxSales.DisplayMember = null;
             comboBoxSales.ValueMember = null;
             comboBoxSales.Refresh();

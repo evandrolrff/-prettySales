@@ -40,6 +40,11 @@ namespace AtividadeFinal.Views
         }
 
         #region EventsButtons
+        /// <summary>
+        /// Retorna para o menu principal <see cref="FormListObjects"/>
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnReturn_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show("Tem certeza que deseja retornar?", "Atenção", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
@@ -49,6 +54,11 @@ namespace AtividadeFinal.Views
             }
         }
 
+        /// <summary>
+        /// Adiciona uma nova venda <see cref="Sales"></see>
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnAdd_Click(object sender, EventArgs e)
         {
             Sales sale = createSaleFromFields();
@@ -65,6 +75,11 @@ namespace AtividadeFinal.Views
             }
         }
 
+        /// <summary>
+        /// Edita uma venda <see cref="Sales"></see>
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnEdit_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show("Tem certeza que deseja editar este registro?", "Atenção", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
@@ -88,6 +103,11 @@ namespace AtividadeFinal.Views
             }
         }
 
+        /// <summary>
+        /// Exclui uma venda <see cref="Sales"></see>
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnDel_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show("Tem certeza que deseja excluir este registro?", "Atenção", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
@@ -105,12 +125,18 @@ namespace AtividadeFinal.Views
         #endregion
 
         #region Utilities
+        /// <summary>
+        /// Inicializa o DateTimePicker para mostrar a data e a hora no formato "dd/MM/aaaa HH:mm".
+        /// </summary>
         private void InitilizeDateTimePicker()
         {
             dateTimePickerSales.Format = DateTimePickerFormat.Custom;
             dateTimePickerSales.CustomFormat = "dd/MM/yyyy HH:mm";
         }
 
+        /// <summary>
+        /// Preenche os ComboBox com os dados de usuários e produtos.
+        /// </summary>
         private void InitializeComboBox()
         {
             comboBoxUsers.DataSource = new UserController().GetAllRegistry();
@@ -122,6 +148,11 @@ namespace AtividadeFinal.Views
             comboBoxProducts.ValueMember = "Id";
         }
 
+        /// <summary>
+        /// Cria um novo objeto <see cref="Sales"></see> a partir dos campos do formulário.
+        /// </summary>
+        /// <param name="saleId"></param>
+        /// <returns></returns>
         private Sales createSaleFromFields(int saleId = 0)
         {
             Sales sale = null;
@@ -149,6 +180,9 @@ namespace AtividadeFinal.Views
             return sale;
         }
 
+        /// <summary>
+        /// Habilita ou desabilita os botões de acordo com o modo de edição.
+        /// </summary>
         private void EnablesAndDisablesButtons()
         {
             if (isEditMode)
