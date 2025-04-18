@@ -12,6 +12,10 @@ namespace AtividadeFinal.Models
         private int quantity;
         private DateTime saleDate;
 
+        public string UserName => User?.Name;
+        public string ProductName => Product?.Name;
+
+        
         public Sales(int id, User user, Product product, int quantity, DateTime saleDate)
         {
             this.id = id;
@@ -32,13 +36,19 @@ namespace AtividadeFinal.Models
         public User User 
         { 
             get { return user; }
-            set { user = value; }
+            set 
+            {
+                user = value;
+            }
         }
 
         public Product Product 
         { 
             get { return product; }
-            set { product = value; }
+            set 
+            { 
+                product = value;
+            }
         }
 
         public int Quantity 
@@ -56,7 +66,7 @@ namespace AtividadeFinal.Models
         public Sales FromReader(SQLiteDataReader reader)
         {
             Id = reader.GetInt32(reader.GetOrdinal("id"));
-            Quantity = reader.GetInt32(reader.GetOrdinal("quanity"));
+            Quantity = reader.GetInt32(reader.GetOrdinal("quantity"));
             SaleDate = reader.GetDateTime(reader.GetOrdinal("saleDate"));
 
             User = new UserController().GetObjectById(reader.GetInt32(reader.GetOrdinal("userId")));

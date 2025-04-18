@@ -25,15 +25,18 @@ namespace AtividadeFinal.Controllers
                     connection.Open();
                     string query = "INSERT INTO Payments (userId, saleId, amount, paymentDate) " +
                         "VALUES (@userId, @saleId, @amount, @paymentDate)";
-                    SQLiteCommand cmd = new SQLiteCommand(query, connection);
-                    cmd.Parameters.AddWithValue("@userId", classT.User.Id);
-                    cmd.Parameters.AddWithValue("@saleId", classT.Sale.Id);
-                    cmd.Parameters.AddWithValue("@amount", classT.Amount);
-                    cmd.Parameters.AddWithValue("@paymentDate", classT.PaymentDate);
 
-                    int result = cmd.ExecuteNonQuery();
-                    if (result > 0)
-                        sucess = true;
+                    using (SQLiteCommand cmd = new SQLiteCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@userId", classT.User.Id);
+                        cmd.Parameters.AddWithValue("@saleId", classT.Sale.Id);
+                        cmd.Parameters.AddWithValue("@amount", classT.Amount);
+                        cmd.Parameters.AddWithValue("@paymentDate", classT.PaymentDate);
+
+                        int result = cmd.ExecuteNonQuery();
+                        if (result > 0)
+                            sucess = true;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -57,13 +60,17 @@ namespace AtividadeFinal.Controllers
                 try
                 {
                     connection.Open();
-                    SQLiteCommand cmd = new SQLiteCommand("SELECT * FROM Payments", connection);
-                    SQLiteDataReader reader = cmd.ExecuteReader();
-
-                    while (reader.Read())
+                    
+                    using(SQLiteCommand cmd = new SQLiteCommand("SELECT * FROM Payments", connection))
                     {
-                        Payments payment = new Payments();
-                        payments.Add(payment.FromReader(reader));
+                        using(SQLiteDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Payments payment = new Payments();
+                                payments.Add(payment.FromReader(reader));
+                            }
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -87,13 +94,18 @@ namespace AtividadeFinal.Controllers
                 try
                 {
                     connection.Open();
-                    SQLiteCommand cmd = new SQLiteCommand("SELECT * FROM Payments WHERE id = @Id", connection);
-                    cmd.Parameters.AddWithValue("@Id", id);
-                    SQLiteDataReader reader = cmd.ExecuteReader();
-
-                    if (reader.Read())
+                    
+                    using (SQLiteCommand cmd = new SQLiteCommand("SELECT * FROM Payments WHERE id = @Id", connection))
                     {
-                        payment.FromReader(reader);
+                        cmd.Parameters.AddWithValue("@Id", id);
+                    
+                        using(SQLiteDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                payment.FromReader(reader);
+                            }
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -119,12 +131,15 @@ namespace AtividadeFinal.Controllers
                 {
                     connection.Open();
                     string query = "DELETE FROM Payments WHERE id = @Id";
-                    SQLiteCommand cmd = new SQLiteCommand(query, connection);
-                    cmd.Parameters.AddWithValue("@Id", id);
 
-                    int result = cmd.ExecuteNonQuery();
-                    if (result > 0)
-                        sucess = true;
+                    using(SQLiteCommand cmd = new SQLiteCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@Id", id);
+
+                        int result = cmd.ExecuteNonQuery();
+                        if (result > 0)
+                            sucess = true;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -149,16 +164,19 @@ namespace AtividadeFinal.Controllers
                     connection.Open();
                     string query = "UPDATE Payments SET userId = @userId, saleId = @saleId, amount = @amount, " +
                         "paymentDate = @paymentDate WHERE id = @Id";
-                    SQLiteCommand cmd = new SQLiteCommand(query, connection);
-                    cmd.Parameters.AddWithValue("@Id", classT.Id);
-                    cmd.Parameters.AddWithValue("@userId", classT.User.Id);
-                    cmd.Parameters.AddWithValue("@saleId", classT.Sale.Id);
-                    cmd.Parameters.AddWithValue("@amount", classT.Amount);
-                    cmd.Parameters.AddWithValue("@paymentDate", classT.PaymentDate);
+                    
+                    using(SQLiteCommand cmd = new SQLiteCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@Id", classT.Id);
+                        cmd.Parameters.AddWithValue("@userId", classT.User.Id);
+                        cmd.Parameters.AddWithValue("@saleId", classT.Sale.Id);
+                        cmd.Parameters.AddWithValue("@amount", classT.Amount);
+                        cmd.Parameters.AddWithValue("@paymentDate", classT.PaymentDate);
 
-                    int result = cmd.ExecuteNonQuery();
-                    if (result > 0)
-                        sucess = true;
+                        int result = cmd.ExecuteNonQuery();
+                        if (result > 0)
+                            sucess = true;
+                    }
                 }
                 catch (Exception ex)
                 {

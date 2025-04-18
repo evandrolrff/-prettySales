@@ -1,35 +1,55 @@
 ﻿using AtividadeFinal.Controllers;
 using AtividadeFinal.Models;
 using System;
-using System.Collections.Generic;
+using System.Drawing;
+using System.Globalization;
 using System.Windows.Forms;
 
 namespace AtividadeFinal.Views
 {
     public partial class FormProducts : Form
     {
+        private readonly ProductController controller;
+        private readonly Product myProduct;
+        private readonly bool isEditMode = false;
 
-        private ProductController controller;
-
-        private readonly Dictionary<string, string> columnsDataGridProducts = new Dictionary<string, string>
-        {
-            { "id", "ID"},
-            { "name" , "Nome"},
-            { "description", "Descrição"},
-            { "price", "Preço"},
-            { "pathImage", "Caminho URL"}
-        };
+        public event EventHandler DataChanged;
         
-        public FormProducts(ProductController productController = null)
+        public FormProducts(Product product = null)
         {
             InitializeComponent();
-            ConfigureDataGridView();
+            controller = new ProductController();
 
-            if (productController != null)
+            if (product != null)
             {
-                controller = productController;
-                GetAllProducts(controller);
+                isEditMode = true;
+                myProduct = product;
+
+                txtName.Text = product.Name;
+                txtDescription.Text = product.Description;
+                txtPrice.Text = product.Price.ToString();
+                labelPathImage.Text = product.PathImage;
+
+                try
+                {
+                    pictureBox.Image = Image.FromFile(product.PathImage);
+                }
+                catch (Exception ex) 
+                {
+                    pictureBox.Image = null;
+                    pictureBox.BackColor = Color.LightGray;
+
+                    using (Graphics g = pictureBox.CreateGraphics())
+                    {
+                        g.Clear(Color.LightGray);
+                        g.DrawString("Erro ao carregar imagem",
+                                     new Font("Arial", 10, FontStyle.Bold),
+                                     Brushes.Red, new PointF(10, pictureBox.Height / 2 - 10));
+                    }
+                }
             }
+
+            EnablesAndDisablesButtons();
         }
 
         #region EventsButtons
@@ -42,8 +62,7 @@ namespace AtividadeFinal.Views
         {
             if (!string.IsNullOrWhiteSpace(txtName.Text) ||
                !string.IsNullOrWhiteSpace(txtDescription.Text) ||
-               !string.IsNullOrWhiteSpace(txtPrice.Text) ||
-               !string.IsNullOrWhiteSpace(txtPathImage.Text))
+               !string.IsNullOrWhiteSpace(txtPrice.Text))
             {
                 DialogResult result = MessageBox.Show("Tem certeza que deseja retornar?", "Atenção", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
                 if (result == DialogResult.Yes)
@@ -73,7 +92,8 @@ namespace AtividadeFinal.Views
             }
             else
             {
-                clean_fields();
+                DataChanged?.Invoke(this, EventArgs.Empty);
+                this.Close();
             }
         }
 
@@ -84,30 +104,24 @@ namespace AtividadeFinal.Views
         /// <param name="e"></param>
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            // Verifique se uma linha está selecionada
-            if (dataGridProducts.SelectedRows.Count > 0)
+            DialogResult result = MessageBox.Show("Tem certeza que deseja editar este registro?", "Atenção", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+            if (result == DialogResult.Yes)
             {
-                // Obtenha o índice da linha selecionada
-                int rowIndex = dataGridProducts.SelectedRows[0].Index;
-                // Obtém a linha selecionada
-                DataGridViewRow row = dataGridProducts.Rows[rowIndex];
+                myProduct.Name = txtName.Text;
+                myProduct.Description = txtDescription.Text;
+                myProduct.Price = float.Parse(txtPrice.Text, CultureInfo.InvariantCulture.NumberFormat);
+                myProduct.PathImage = labelPathImage.Text ?? string.Empty;
 
-                DialogResult result = MessageBox.Show("Tem certeza que deseja editar este registro?", "Atenção", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
-                if (result == DialogResult.Yes)
+                bool isEdited = controller.UpdateObject(myProduct);
+                if (!isEdited)
                 {
-                    Product product = createProductFromFields(Convert.ToInt32(row.Cells["col-id"].Value));
-                    bool isEdited = controller.UpdateObject(product);
-                    if (!isEdited)
-                    {
-                        MessageBox.Show("Houve algum erro durante a edição do produto.", "Informação", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                    MessageBox.Show("Houve algum erro durante a edição do produto.", "Informação", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-
-                clean_fields();
-            }
-            else
-            {
-                MessageBox.Show("Selecione uma linha para editar.", "Informação", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                else
+                {
+                    DataChanged?.Invoke(this, EventArgs.Empty);
+                    this.Close();
+                }
             }
         }
 
@@ -118,86 +132,37 @@ namespace AtividadeFinal.Views
         /// <param name="e"></param>
         private void btnDel_Click(object sender, EventArgs e)
         {
-            // Verifique se uma linha está selecionada
-            if (dataGridProducts.SelectedRows.Count > 0)
+            DialogResult result = MessageBox.Show("Tem certeza que deseja excluir este registro?", "Atenção", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+            if (result == DialogResult.Yes)
             {
-                // Obtenha o índice da linha selecionada
-                int rowIndex = dataGridProducts.SelectedRows[0].Index;
-                // Obtém a linha selecionada
-                DataGridViewRow row = dataGridProducts.Rows[rowIndex];
-
-                DialogResult result = MessageBox.Show("Tem certeza que deseja excluir este registro?", "Atenção", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
-                if (result == DialogResult.Yes)
-                {
-                    controller.RemoveObject(Convert.ToInt32(row.Cells["col-id"].Value));
-                    this.Close();
-                }
-                else
-                {
-                    clean_fields();
-                }
+                controller.RemoveObject(myProduct.Id);
+                DataChanged?.Invoke(this, EventArgs.Empty);
+                this.Close();
             }
             else
             {
-                MessageBox.Show("Selecione uma linha para excluir.", "Informação", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-        }
-        #endregion
-
-        #region EventsDataGrid
-        /// <summary>
-        /// Preenche o DataGridView com todos os produtos
-        /// </summary>
-        /// <param name="controller"></param>
-        private void GetAllProducts(ProductController controller)
-        {
-            List<Product> products = controller.GetAllRegistry();
-            if (products.Count > 0)
-            {
-                dataGridProducts.DataSource = null; // reseta a fonte de dados
-                dataGridProducts.DataSource = products; // Atribui a lista ao DataGridView
-            }
-            else
-            {
-                btnDel.Enabled = false;
-                btnEdit.Enabled = false;
+                this.Close();
             }
         }
 
-        /// <summary>
-        /// Preenche os campos de acordo com o produto selecionado do DataGridView <see cref="DataGridView.SelectedRows"/>
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void dataGridProducts_SelectionChanged(object sender, EventArgs e)
+        private void btnSelect_Click(object sender, EventArgs e)
         {
-            // Verifica se alguma linha foi selecionada
-            if (dataGridProducts.SelectedRows.Count > 0)
+            OpenFileDialog openFileDialog = new OpenFileDialog
             {
-                // Ação que você deseja realizar quando uma linha for selecionada
-                DataGridViewRow selectedRow = dataGridProducts.SelectedRows[0];
+                // Configurações opcionais
+                Title = "Selecione um arquivo",
+                Filter = "Imagens (*.jpg;*.jpeg;*.png;*.bmp;*.gif)|*.jpg;*.jpeg;*.png;*.bmp;*.gif",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
+            };
 
-                fillInFields(selectedRow);
-            }
-        }
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string caminhoArquivo = openFileDialog.FileName;
 
-        /// <summary>
-        /// Preenche os campos de acordo com o produto selecionado do DataGridView <see cref="DataGridView.Rows">
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void dataGridProducts_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            // Verifica se o clique foi em uma linha válida (não no cabeçalho)
-            if (e.RowIndex >= 0)
-            {
-                // Obtém a linha selecionada
-                DataGridViewRow row = dataGridProducts.Rows[e.RowIndex];
-                fillInFields(row);
-            }
-            else
-            {
-                clean_fields();
+                labelPathImage.Text = caminhoArquivo;
+
+                pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                pictureBox.Image = Image.FromFile(caminhoArquivo);
             }
         }
         #endregion
@@ -219,7 +184,7 @@ namespace AtividadeFinal.Views
                     Name = txtName.Text,
                     Description = txtDescription.Text,
                     Price = numero,
-                    PathImage = txtPathImage.Text,
+                    PathImage = labelPathImage.Text ?? string.Empty,
                 };
 
                 if (productId != 0)
@@ -235,49 +200,26 @@ namespace AtividadeFinal.Views
             return product;
         }
 
-        /// <summary>
-        /// Preenche os campos de acordo com um <see cref="DataGridViewRow"> selecionado.
-        /// </summary>
-        /// <param name="row"></param>
-        private void fillInFields(DataGridViewRow row)
+        private void EnablesAndDisablesButtons()
         {
-            foreach(KeyValuePair<string, string> valuePair in columnsDataGridProducts)
+            if (isEditMode)
             {
-                switch (valuePair.Key)
-                {
-                    case "name":
-                        txtName.Text = row.Cells[$"col-{valuePair.Key}"].Value.ToString();
-                        break;
-                    case "description":
-                        txtDescription.Text = row.Cells[$"col-{valuePair.Key}"].Value.ToString();
-                        break;
-                    case "price":
-                        txtPrice.Text = row.Cells[$"col-{valuePair.Key}"].Value.ToString();
-                        break;
-                    case "pathImage":
-                        txtPathImage.Text = row.Cells[$"col-{valuePair.Key}"].Value.ToString();
-                        break;
-                    case "id":
-                    default:
-                        break;
-                }
+                btnAdd.Enabled = false;
+                btnEdit.Enabled = true;
+                btnDel.Enabled = true;
+                btnSelect.Enabled = true;
+                this.Text = "Editar Produto";
+                btnEdit.Text = "Salvar Alterações";
             }
-        }
-
-        /// <summary>
-        /// Limpa os campos de textos do form.
-        /// </summary>
-        private void clean_fields()
-        {
-            foreach (Control controle in this.Controls)
+            else
             {
-                if (controle is TextBox)
-                {
-                    controle.Text = "";
-                }
+                btnAdd.Enabled = true;
+                btnSelect.Enabled= true;
+                btnEdit.Enabled = false;
+                btnDel.Enabled = false;
+                this.Text = "Adicionar Novo Produto";
             }
 
-            GetAllProducts(controller);
         }
         #endregion
     }

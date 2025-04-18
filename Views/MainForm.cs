@@ -1,5 +1,5 @@
-﻿using AtividadeFinal.Controllers;
-using AtividadeFinal.Views;
+﻿using AtividadeFinal.Views;
+using AtividadeFinal.Views.DataGridColumns;
 using System;
 using System.Windows.Forms;
 
@@ -20,9 +20,8 @@ namespace AtividadeFinal
         /// <param name="e"></param>
         private void btnUser_Click(object sender, EventArgs e)
         {
-            UserController userController = new UserController();
-            FormUsers formUsers = new FormUsers(userController);
-            formUsers.ShowDialog();
+            FormListObjects formListObjects = new FormListObjects(ObjectType.User);
+            formListObjects.ShowDialog();
         }
 
         /// <summary>
@@ -32,23 +31,20 @@ namespace AtividadeFinal
         /// <param name="e"></param>
         private void btnProducts_Click(object sender, EventArgs e)
         {
-            ProductController productController = new ProductController();
-            FormProducts formProducts = new FormProducts(productController);
-            formProducts.ShowDialog();
+            FormListObjects formListObjects = new FormListObjects(ObjectType.Product);
+            formListObjects.ShowDialog();
         }
 
         private void btnSales_Click(object sender, EventArgs e)
         {
-            SalesController salesController = new SalesController();
-            FormSales formSales = new FormSales();
-            formSales.ShowDialog();
+            FormListObjects formListObjects = new FormListObjects(ObjectType.Sale);
+            formListObjects.ShowDialog();
         }
 
         private void btnPayments_Click(object sender, EventArgs e)
         {
-            PaymentsController paymentsController = new PaymentsController();
-            FormPayments formPayments = new FormPayments();
-            formPayments.ShowDialog();
+            FormListObjects formListObjects = new FormListObjects(ObjectType.Payment);
+            formListObjects.ShowDialog();
         }
     }
 }

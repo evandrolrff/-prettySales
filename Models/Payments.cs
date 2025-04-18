@@ -12,6 +12,10 @@ namespace AtividadeFinal.Models
         private int amount;
         private DateTime paymentDate;
 
+        public string UserName => User?.Name;
+        public string SaleName => Sale?.Product?.Name;
+
+
         public Payments(int id, User user, Sales sale, int amount, DateTime paymentDate) 
         {
             this.id = id;
@@ -32,13 +36,19 @@ namespace AtividadeFinal.Models
         public User User 
         { 
             get { return user; }  
-            set { user = value; } 
+            set 
+            {
+                user = value;
+            } 
         }
 
         public Sales Sale 
         { 
             get { return sale; } 
-            set { sale = value; } 
+            set 
+            {
+                sale = value;                
+            } 
         }
 
         public int Amount 

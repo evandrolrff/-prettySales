@@ -22,13 +22,17 @@ namespace AtividadeFinal.Controllers
                 try
                 {
                     connection.Open();
-                    SQLiteCommand cmd = new SQLiteCommand("SELECT * FROM Products", connection);
-                    SQLiteDataReader reader = cmd.ExecuteReader();
 
-                    while (reader.Read())
+                    using (SQLiteCommand cmd = new SQLiteCommand("SELECT * FROM Products", connection))
                     {
-                        Product product = new Product();
-                        products.Add(product.FromReader(reader));
+                        using (SQLiteDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Product product = new Product();
+                                products.Add(product.FromReader(reader));
+                            }
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -52,13 +56,18 @@ namespace AtividadeFinal.Controllers
                 try
                 {
                     connection.Open();
-                    SQLiteCommand cmd = new SQLiteCommand("SELECT * FROM Products WHERE Id = @Id", connection);
-                    cmd.Parameters.AddWithValue("@Id", id);
-                    SQLiteDataReader reader = cmd.ExecuteReader();
-
-                    if (reader.Read())
+                    
+                    using (SQLiteCommand cmd = new SQLiteCommand("SELECT * FROM Products WHERE Id = @Id", connection))
                     {
-                        product.FromReader(reader);
+                        cmd.Parameters.AddWithValue("@Id", id);
+                        
+                        using (SQLiteDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                product.FromReader(reader);
+                            }
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -85,15 +94,18 @@ namespace AtividadeFinal.Controllers
                     connection.Open();
                     string query = "INSERT INTO Products (name, description, price, pathImage) " +
                         "VALUES (@name, @description, @price, @pathImage)";
-                    SQLiteCommand cmd = new SQLiteCommand(query, connection);
-                    cmd.Parameters.AddWithValue("@name", classT.Name);
-                    cmd.Parameters.AddWithValue("@description", classT.Description);
-                    cmd.Parameters.AddWithValue("@price", classT.Price);
-                    cmd.Parameters.AddWithValue("@pathImage", classT.PathImage);
+                    
+                    using (SQLiteCommand cmd = new SQLiteCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@name", classT.Name);
+                        cmd.Parameters.AddWithValue("@description", classT.Description);
+                        cmd.Parameters.AddWithValue("@price", classT.Price);
+                        cmd.Parameters.AddWithValue("@pathImage", classT.PathImage);
 
-                    int result = cmd.ExecuteNonQuery();
-                    if (result > 0)
-                        sucess = true;
+                        int result = cmd.ExecuteNonQuery();
+                        if (result > 0)
+                            sucess = true;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -120,12 +132,14 @@ namespace AtividadeFinal.Controllers
                 {
                     connection.Open();
                     string query = "DELETE FROM Products WHERE Id = @Id";
-                    SQLiteCommand cmd = new SQLiteCommand(query, connection);
-                    cmd.Parameters.AddWithValue("@Id", id);
 
-                    int result = cmd.ExecuteNonQuery();
-                    if (result > 0)
-                        sucess = true;
+                    using (SQLiteCommand cmd = new SQLiteCommand(query, connection)){
+                        cmd.Parameters.AddWithValue("@Id", id);
+
+                        int result = cmd.ExecuteNonQuery();
+                        if (result > 0)
+                            sucess = true;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -150,16 +164,19 @@ namespace AtividadeFinal.Controllers
                     connection.Open();
                     string query = "UPDATE Products SET name = @name, description = @description, price = @price, " +
                         "pathImage = @pathImage WHERE Id = @Id";
-                    SQLiteCommand cmd = new SQLiteCommand(query, connection);
-                    cmd.Parameters.AddWithValue("@Id", classT.Id);
-                    cmd.Parameters.AddWithValue("@name", classT.Name);
-                    cmd.Parameters.AddWithValue("@description", classT.Description);
-                    cmd.Parameters.AddWithValue("@price", classT.Price);
-                    cmd.Parameters.AddWithValue("@pathImage", classT.PathImage);
 
-                    int result = cmd.ExecuteNonQuery();
-                    if (result > 0)
-                        sucess = true;
+                    using (SQLiteCommand cmd = new SQLiteCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@Id", classT.Id);
+                        cmd.Parameters.AddWithValue("@name", classT.Name);
+                        cmd.Parameters.AddWithValue("@description", classT.Description);
+                        cmd.Parameters.AddWithValue("@price", classT.Price);
+                        cmd.Parameters.AddWithValue("@pathImage", classT.PathImage);
+
+                        int result = cmd.ExecuteNonQuery();
+                        if (result > 0)
+                            sucess = true;
+                    }
                 }
                 catch (Exception ex)
                 {
