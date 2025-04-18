@@ -1,11 +1,14 @@
 ## Pretty Sales
 ### Description
-This is the first version of the project. In this release, you'll find basic functionality for managing users and products, along with a connection to an SQLite database.
+This is the first version of the project. In this release, you'll find basic functionality for managing users, products, sales, and payments, along with a connection to an SQLite database.
 
 ## Features
 - **User CRUD**: Create, Read, Update, and Delete operations for managing user records.
 - **Product CRUD**: Create, Read, Update, and Delete operations for managing product records.
+- **Sales CRUD**: Manage sales transactions with full Create, Read, Update, and Delete functionality.
+- **Payments CRUD**: Record and manage payment information for each sale.
 - **SQLite Connection**: Integration with SQLite for database storage and management.
+
 
 ## Getting Started
 To get started with this project, follow the instructions below:
@@ -58,9 +61,36 @@ Once the application is running, you can perform CRUD operations for both Users 
 - **Read Product**: View existing products.
 - **Update Product**: Modify product details.
 - **Delete Product**: Remove products from the system.
+### Sales Operations:
+- **Create Sale**: Register a new sale transaction.
+- **Read Sale**: View existing sales.
+- **Update Sale**: Edit details of a sale.
+- **Delete Sale**: Remove a sale record.
+### Payment Operations:
+- **Create Payment**: Record a payment for a sale.
+- **Read Payment**: View payment history.
+- **Update Payment**: Modify payment details.
+- **Delete Payment**: Remove a payment record.
+
+### Preview
+![App demo](docs/Animação.gif)
+
+### Technologies Used
+- .NET 8.0
+- C#
+- SQLite
+- Entity Framework Core (se for o caso)
 
 ### Contributing
-Feel free to fork the repository, submit issues, or send pull requests for any improvements or bug fixes.
+Contributions are welcome! To contribute:
+1. Fork the repository
+2. Create a new branch (`git checkout -b feature/your-feature`)
+3. Commit your changes (`git commit -m 'Add your message'`)
+4. Push to the branch (`git push origin feature/your-feature`)
+5. Open a Pull Request
 
 ### License
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+![.NET](https://img.shields.io/badge/.NET-8.0-blue)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
