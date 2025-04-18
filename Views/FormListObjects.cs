@@ -1,7 +1,6 @@
 ﻿using AtividadeFinal.Controllers;
 using AtividadeFinal.Models;
 using AtividadeFinal.Views.DataGridColumns;
-using Org.BouncyCastle.Math.EC.Rfc7748;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -52,7 +51,11 @@ namespace AtividadeFinal.Views
                     }
                     break;
                 case ObjectType.Payment:
-                    new FormPayments().ShowDialog();
+                    using (FormPayments form = new FormPayments())
+                    {
+                        form.DataChanged += (s, args) => RefreshData();
+                        form.ShowDialog();
+                    }
                     break;
                 default:
                     throw new ArgumentException("Tipo de objeto inválido");
@@ -218,6 +221,11 @@ namespace AtividadeFinal.Views
                     break;
                 case ObjectType.Payment:
                     Payments payment = new PaymentsController().GetObjectById(id);
+                    using (FormPayments form = new FormPayments(payment))
+                    {
+                        form.DataChanged += (s, args) => RefreshData();
+                        form.ShowDialog();
+                    }
                     break;
                 default:
                     throw new ArgumentException("Tipo de objeto inválido");

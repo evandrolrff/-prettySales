@@ -105,7 +105,6 @@ namespace AtividadeFinal.Views
         #endregion
 
         #region Utilities
-
         private void InitilizeDateTimePicker()
         {
             dateTimePickerSales.Format = DateTimePickerFormat.Custom;
@@ -149,6 +148,7 @@ namespace AtividadeFinal.Views
 
             return sale;
         }
+
         private void EnablesAndDisablesButtons()
         {
             if (isEditMode)
@@ -166,7 +166,6 @@ namespace AtividadeFinal.Views
                 btnDel.Enabled = false;
                 this.Text = "Adicionar Nova Venda";
             }
-
         }
         #endregion
     }
