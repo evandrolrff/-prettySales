@@ -1,6 +1,7 @@
 ﻿using AtividadeFinal.Controllers;
 using AtividadeFinal.Models;
 using AtividadeFinal.Views.DataGridColumns;
+using Org.BouncyCastle.Math.EC.Rfc7748;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -44,7 +45,11 @@ namespace AtividadeFinal.Views
                     }
                     break;
                 case ObjectType.Sale:
-                    new FormSales().ShowDialog();
+                    using (FormSales form = new FormSales())
+                    {
+                        form.DataChanged += (s, args) => RefreshData();
+                        form.ShowDialog();
+                    }
                     break;
                 case ObjectType.Payment:
                     new FormPayments().ShowDialog();
@@ -205,6 +210,11 @@ namespace AtividadeFinal.Views
                     break;
                 case ObjectType.Sale:
                     Sales sale = new SalesController().GetObjectById(id);
+                    using (FormSales form = new FormSales(sale))
+                    {
+                        form.DataChanged += (s, args) => RefreshData();
+                        form.ShowDialog();
+                    }
                     break;
                 case ObjectType.Payment:
                     Payments payment = new PaymentsController().GetObjectById(id);

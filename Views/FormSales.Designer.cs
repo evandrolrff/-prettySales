@@ -36,10 +36,12 @@ namespace AtividadeFinal.Views
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.numericUpDownQuantity = new System.Windows.Forms.NumericUpDown();
-            this.monthCalendarSaleDate = new System.Windows.Forms.MonthCalendar();
             this.label4 = new System.Windows.Forms.Label();
-            this.btnConfirm = new System.Windows.Forms.Button();
+            this.btnAdd = new System.Windows.Forms.Button();
             this.btnReturn = new System.Windows.Forms.Button();
+            this.btnEdit = new System.Windows.Forms.Button();
+            this.btnDel = new System.Windows.Forms.Button();
+            this.dateTimePickerSales = new System.Windows.Forms.DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownQuantity)).BeginInit();
             this.SuspendLayout();
             // 
@@ -48,7 +50,7 @@ namespace AtividadeFinal.Views
             this.comboBoxUsers.FormattingEnabled = true;
             this.comboBoxUsers.Location = new System.Drawing.Point(40, 42);
             this.comboBoxUsers.Name = "comboBoxUsers";
-            this.comboBoxUsers.Size = new System.Drawing.Size(348, 21);
+            this.comboBoxUsers.Size = new System.Drawing.Size(424, 21);
             this.comboBoxUsers.TabIndex = 0;
             // 
             // comboBoxProducts
@@ -56,7 +58,7 @@ namespace AtividadeFinal.Views
             this.comboBoxProducts.FormattingEnabled = true;
             this.comboBoxProducts.Location = new System.Drawing.Point(40, 92);
             this.comboBoxProducts.Name = "comboBoxProducts";
-            this.comboBoxProducts.Size = new System.Drawing.Size(348, 21);
+            this.comboBoxProducts.Size = new System.Drawing.Size(424, 21);
             this.comboBoxProducts.TabIndex = 1;
             // 
             // label1
@@ -93,16 +95,6 @@ namespace AtividadeFinal.Views
             this.numericUpDownQuantity.Size = new System.Drawing.Size(120, 20);
             this.numericUpDownQuantity.TabIndex = 6;
             // 
-            // monthCalendarSaleDate
-            // 
-            this.monthCalendarSaleDate.Enabled = false;
-            this.monthCalendarSaleDate.FirstDayOfWeek = System.Windows.Forms.Day.Monday;
-            this.monthCalendarSaleDate.Location = new System.Drawing.Point(46, 197);
-            this.monthCalendarSaleDate.MaxSelectionCount = 1;
-            this.monthCalendarSaleDate.MinDate = new System.DateTime(2025, 4, 11, 21, 42, 37, 0);
-            this.monthCalendarSaleDate.Name = "monthCalendarSaleDate";
-            this.monthCalendarSaleDate.TabIndex = 7;
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -112,18 +104,19 @@ namespace AtividadeFinal.Views
             this.label4.TabIndex = 8;
             this.label4.Text = "Data ";
             // 
-            // btnConfirm
+            // btnAdd
             // 
-            this.btnConfirm.Location = new System.Drawing.Point(313, 378);
-            this.btnConfirm.Name = "btnConfirm";
-            this.btnConfirm.Size = new System.Drawing.Size(75, 23);
-            this.btnConfirm.TabIndex = 9;
-            this.btnConfirm.Text = "Confirmar";
-            this.btnConfirm.UseVisualStyleBackColor = true;
+            this.btnAdd.Location = new System.Drawing.Point(389, 197);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(75, 23);
+            this.btnAdd.TabIndex = 9;
+            this.btnAdd.Text = "Adicionar";
+            this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // btnReturn
             // 
-            this.btnReturn.Location = new System.Drawing.Point(24, 378);
+            this.btnReturn.Location = new System.Drawing.Point(40, 257);
             this.btnReturn.Name = "btnReturn";
             this.btnReturn.Size = new System.Drawing.Size(75, 23);
             this.btnReturn.TabIndex = 10;
@@ -131,15 +124,44 @@ namespace AtividadeFinal.Views
             this.btnReturn.UseVisualStyleBackColor = true;
             this.btnReturn.Click += new System.EventHandler(this.btnReturn_Click);
             // 
+            // btnEdit
+            // 
+            this.btnEdit.Location = new System.Drawing.Point(389, 227);
+            this.btnEdit.Name = "btnEdit";
+            this.btnEdit.Size = new System.Drawing.Size(75, 23);
+            this.btnEdit.TabIndex = 11;
+            this.btnEdit.Text = "Editar";
+            this.btnEdit.UseVisualStyleBackColor = true;
+            this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
+            // 
+            // btnDel
+            // 
+            this.btnDel.Location = new System.Drawing.Point(389, 257);
+            this.btnDel.Name = "btnDel";
+            this.btnDel.Size = new System.Drawing.Size(75, 23);
+            this.btnDel.TabIndex = 12;
+            this.btnDel.Text = "Excluir";
+            this.btnDel.UseVisualStyleBackColor = true;
+            this.btnDel.Click += new System.EventHandler(this.btnDel_Click);
+            // 
+            // dateTimePickerSales
+            // 
+            this.dateTimePickerSales.Location = new System.Drawing.Point(40, 200);
+            this.dateTimePickerSales.Name = "dateTimePickerSales";
+            this.dateTimePickerSales.Size = new System.Drawing.Size(250, 20);
+            this.dateTimePickerSales.TabIndex = 13;
+            // 
             // FormSales
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(417, 431);
+            this.ClientSize = new System.Drawing.Size(501, 301);
+            this.Controls.Add(this.dateTimePickerSales);
+            this.Controls.Add(this.btnDel);
+            this.Controls.Add(this.btnEdit);
             this.Controls.Add(this.btnReturn);
-            this.Controls.Add(this.btnConfirm);
+            this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.monthCalendarSaleDate);
             this.Controls.Add(this.numericUpDownQuantity);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -163,9 +185,11 @@ namespace AtividadeFinal.Views
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown numericUpDownQuantity;
-        private System.Windows.Forms.MonthCalendar monthCalendarSaleDate;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button btnConfirm;
+        private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Button btnReturn;
+        private Button btnEdit;
+        private Button btnDel;
+        private DateTimePicker dateTimePickerSales;
     }
 }
