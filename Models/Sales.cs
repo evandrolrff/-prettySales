@@ -13,6 +13,7 @@ namespace AtividadeFinal.Models
         private DateTime saleDate;
 
         public string UserName => User?.Name;
+
         public string ProductName => Product?.Name;
 
         
@@ -73,6 +74,11 @@ namespace AtividadeFinal.Models
             Product = new ProductController().GetObjectById(reader.GetInt32(reader.GetOrdinal("productId")));
 
             return this;
+        }
+
+        public override string ToString()
+        {
+            return $"{ProductName} - {Quantity} unidades - {SaleDate:dd/MM/yyyy}";
         }
     }
 }

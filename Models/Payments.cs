@@ -9,14 +9,14 @@ namespace AtividadeFinal.Models
         private int id;
         private User user;
         private Sales sale;
-        private int amount;
+        private float amount;
         private DateTime paymentDate;
 
         public string UserName => User?.Name;
         public string SaleName => Sale?.Product?.Name;
 
 
-        public Payments(int id, User user, Sales sale, int amount, DateTime paymentDate) 
+        public Payments(int id, User user, Sales sale, float amount, DateTime paymentDate) 
         {
             this.id = id;
             this.user = user;
@@ -51,7 +51,7 @@ namespace AtividadeFinal.Models
             } 
         }
 
-        public int Amount 
+        public float Amount 
         { 
             get { return amount; } 
             set { amount = value; } 
@@ -72,7 +72,7 @@ namespace AtividadeFinal.Models
         {
             Id = reader.GetInt32(reader.GetOrdinal("id"));
             User = new UserController().GetObjectById(reader.GetInt32(reader.GetOrdinal("userId")));
-            Amount = reader.GetInt32(reader.GetOrdinal("amount"));
+            Amount = reader.GetFloat(reader.GetOrdinal("amount"));
             PaymentDate = reader.GetDateTime(reader.GetOrdinal("paymentDate"));
 
             try
