@@ -93,4 +93,4 @@ Contributions are welcome! To contribute:
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 ![.NET](https://img.shields.io/badge/.NET-8.0-blue)
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+![License: Apache](https://img.shields.io/badge/License-Apache-yellow.svg)
